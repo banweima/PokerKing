@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>DD036512-5EB5-4B2E-8EE1-87557A1E4A0E</string>
+	<key>IDESourceControlProjectName</key>
+	<string>PokerKing</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>9692B080-1CF7-48EF-B07D-B89997FF73EB</key>
+		<string>https://github.com/banweima/PokerKing.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>PokerKing.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>9692B080-1CF7-48EF-B07D-B89997FF73EB</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/banweima/PokerKing.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>9692B080-1CF7-48EF-B07D-B89997FF73EB</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9692B080-1CF7-48EF-B07D-B89997FF73EB</string>
+			<key>IDESourceControlWCCName</key>
+			<string>PokerKing</string>
+		</dict>
+	</array>
+</dict>
+</plist>

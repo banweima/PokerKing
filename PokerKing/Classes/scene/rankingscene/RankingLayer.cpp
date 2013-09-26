@@ -24,6 +24,8 @@ RankingLayer::RankingLayer()
 , m_pAllListView(NULL)
 , isTodayRank(false)
 , mWarning(NULL)
+, mSimpleUserInfo(NULL)
+, etListCount(0)
 {}
 
 RankingLayer::~RankingLayer()
@@ -58,6 +60,8 @@ void RankingLayer::setupLayer()
     this->addChild(node);
     
     mWarning->setVisible(false);
+    
+    onTodayClicked(NULL);
     
 }
 
@@ -172,7 +176,7 @@ void RankingLayer::CCListView_cellForRow(cocos2d::extension::CCListView *listVie
         listSize = m_pAllListView->getContentSize();
     }
     
-    CCSize cellSize = CCSizeMake(listSize.width, 46);
+    CCSize cellSize = CCSizeMake(listSize.width, listSize.height/5);
     
     CCListViewCell *cell = CCListViewCell::node();
     cell->setOpacity(0);
@@ -193,16 +197,57 @@ void RankingLayer::CCListView_cellForRow(cocos2d::extension::CCListView *listVie
 
     }
     
-    CCSprite *bgSprite = CCSprite::createWithSpriteFrameName(CCString::createWithFormat("rank_item1", data->nRow%4+1)->getCString());
+    CCSprite *bgSprite = CCSprite::createWithSpriteFrameName("rank_item1");
     
     bgSprite->setPosition(ccp(cellSize.width/2, cellSize.height/2));
+    bgSprite->setScaleX(cellSize.width * 0.9/bgSprite->getContentSize().width);
+    bgSprite->setScaleY(cellSize.height * 0.85 /bgSprite->getContentSize().height);
     cell->addChild(bgSprite);
     
-//    cell->setScaleX(bgSprite->getContentSize().width/listSize.width);
+    float fScale = 0;
+    CCSprite * frameSprite = CCSprite::createWithSpriteFrameName("friend_item_frame1");
+    frameSprite->setAnchorPoint(ccp(0,0.5));
+    
+    fScale = bgSprite->getContentSize().height / frameSprite->getContentSize().height;
+    frameSprite->setScale(fScale);
+    frameSprite->setPosition(ccp(cellSize.width * 0.05 + (bgSprite->getPositionX() - bgSprite->getContentSize().width/2), cellSize.height/2));
+
+    CCLOG("Trying get avarta!!");
+    CCSprite * playerImage = NULL;
+    if (isTodayRank) {
+      
+        playerImage = ((SimpleUserInfo *)pTodayUsers->objectAtIndex(data->nRow))->getAvartaIamge();
+    }
+    else
+    {
+        playerImage = ((SimpleUserInfo *)pAllUsers->objectAtIndex(data->nRow))->getAvartaIamge();
+
+    }
+
+    
+    if(playerImage)
+    {
+        playerImage->setAnchorPoint(ccp(0,0.5));
+        playerImage->setScale(bgSprite->getContentSize().height/playerImage->getContentSize().height);
+        playerImage->setPosition(frameSprite->getPosition());
+        
+        cell->addChild(playerImage);
+    }
+    
+    cell->addChild(frameSprite);
     
     CCLabelTTF *cellLabel = CCLabelTTF::create(cellValue.c_str(), "Arial", 18);
-    cellLabel->setPosition(ccp(cellSize.width/2, cellSize.height/2));
+    
+    cellLabel->setAnchorPoint(ccp(0,0.5));
+    cellLabel->setPosition(ccp(frameSprite->getPositionX() + frameSprite->getContentSize().width * 1.2 * fScale, frameSprite->getPositionY()));
+    
     cell->addChild(cellLabel);
+    
+    CCLabelTTF * rankLabel = CCLabelTTF::create(CCString::createWithFormat("%d", data->nRow + 1)->getCString(), "Arial", 18);
+    rankLabel->setAnchorPoint(ccp(0,0.5));
+    rankLabel->setPosition(ccp(frameSprite->getPositionX() - rankLabel->getContentSize().width * 1.5, frameSprite->getPositionY()));
+    
+    cell->addChild(rankLabel);
 }
 
 void RankingLayer::CCListView_didClickCellAtRow(cocos2d::extension::CCListView *listView, cocos2d::extension::CCListViewProtrolData *data)
@@ -266,37 +311,6 @@ void RankingLayer::getRanking_Done(CCObject * data)
         
         CCDictionary *dict = (CCDictionary *)data;
         
-        CCArray * userList = (CCArray *)dict->objectForKey("simpleUser");
-    
-        if(!userList || userList->count() < 1)
-        {
-            Loading::sharedLoading()->removeLoading();
-            mWarning->setVisible(true);
-            mWarning->setString("暂时没有排行信息！");
-            return;
-        }
-        
-        SimpleUserInfo * simpleUserInfo = NULL;
-        CCDictionary * dic = NULL;
-        for(int i = 0; i < userList->count(); i ++)
-        {
-            dic = (CCDictionary *)userList->objectAtIndex(i);
-
-            simpleUserInfo = SimpleUserInfo::create();
-            simpleUserInfo->parseSimpleUserInfo(dic);
-            simpleUserInfo->retrieveAvartaImage(NULL, NULL);
-            if(isTodayRank)
-            {
-                pTodayUsers->addObject(simpleUserInfo);
-            }
-            else
-            {
-                pAllUsers->addObject(simpleUserInfo);
-            }
-            
-        }
-        
-        
         CCArray * rankList = (CCArray *)dict->objectForKey("rankUserInfoList");
     
         if(!rankList || rankList->count() < 1)
@@ -327,7 +341,30 @@ void RankingLayer::getRanking_Done(CCObject * data)
             
         }
 
-        addListView();
+        
+        CCArray * userList = (CCArray *)dict->objectForKey("simpleUser");
+    
+        if(!userList || userList->count() < 1)
+        {
+            Loading::sharedLoading()->removeLoading();
+            mWarning->setVisible(true);
+            mWarning->setString("暂时没有排行信息！");
+            return;
+        }
+        
+        etListCount = userList->count();
+        
+        CCDictionary * dic = NULL;
+        for(int i = 0; i < userList->count(); i ++)
+        {
+            dic = (CCDictionary *)userList->objectAtIndex(i);
+
+            mSimpleUserInfo = SimpleUserInfo::create();
+            mSimpleUserInfo->retain();
+            mSimpleUserInfo->parseSimpleUserInfo(dic);
+            mSimpleUserInfo->retrieveAvartaImage(this, callfuncND_selector(RankingLayer::addSimpleUser));
+        }
+        //addListView();
     }
     
     Loading::sharedLoading()->removeLoading();
@@ -343,4 +380,30 @@ void RankingLayer::onTodayClicked(cocos2d::CCObject *pSender)
     GameServerAction::sharedGameServerAction()->showTotalTimes(3,this, callfuncO_selector(RankingLayer::getRanking_Done));
 
 }
+
+
+void RankingLayer::addSimpleUser(cocos2d::CCNode *pNode, void *data)
+{
+    
+    if((bool)data)
+    {
+        if (isTodayRank) {
+            pTodayUsers->addObject(mSimpleUserInfo);
+        }
+        else{
+            pAllUsers->addObject(mSimpleUserInfo);
+        }
+        
+    }
+    
+    CCLOG("etListCount: %d", etListCount);
+    
+    etListCount --;
+    if(etListCount == 0)
+    {
+        CCLOG("addListView");
+        addListView();
+    }
+}
+
 

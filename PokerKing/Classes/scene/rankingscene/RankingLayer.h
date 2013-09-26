@@ -15,6 +15,7 @@
 #include "cocos2d.h"
 #include "cocos-ext.h"
 #include "CCListView.h"
+#include "SimpleUserInfo.h"
 #include "MainBoardScene.h"
 
 USING_NS_CC;
@@ -45,6 +46,8 @@ private:
     bool isTodayRank;
 
     int mIndexImgWidth;
+    int etListCount;
+    SimpleUserInfo * mSimpleUserInfo;
     
 public:
     CCB_STATIC_NEW_AUTORELEASE_OBJECT_WITH_INIT_METHOD(RankingLayer, create);
@@ -79,6 +82,8 @@ private:
      void onTodayClicked(CCObject * pSender);
     
     void getRanking_Done(CCObject * data);
+    
+    void addSimpleUser(cocos2d::CCNode *pNode, void *data);
     
 };
 

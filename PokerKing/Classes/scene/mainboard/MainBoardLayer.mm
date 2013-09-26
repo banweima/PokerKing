@@ -96,6 +96,7 @@ void MainBoardLayer::setupLayer()
     
     BroadCast::sharedBroadCast()->addBCToLayer(this);
     
+
     
     if(isFirstTimeEnter < 2)
     {
@@ -104,7 +105,6 @@ void MainBoardLayer::setupLayer()
         WhiteBoardLayer * wbLayer =  WhiteBoardLayer::sharedWhiteBoardLayer();
         wbLayer->getEventsInfo();
         wbLayer->addWhiteBoardToLayer(this);
-//        wbLayer->addWhiteBoardToLayer(this, this, callfuncND_selector(MainBoardLayer::showUserBoss));
     }
     else
     {
@@ -122,7 +122,7 @@ SEL_MenuHandler MainBoardLayer::onResolveCCBCCMenuItemSelector(CCObject * pTarge
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onVideoPokerClicked", MainBoardLayer::onVideoPokerClicked);
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onLotteryClicked", MainBoardLayer::onLotteryClicked);
 
-    CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onLeadBoardClicked", MainBoardLayer::onLeaderBoarderClicked);
+    CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onRankClicked", MainBoardLayer::onLeaderBoarderClicked);
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onSettingClicked", MainBoardLayer::onSettingClicked);
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onShopButtonClicked", MainBoardLayer::onShopButtonClicked);
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onFriendsClicked", MainBoardLayer::onFriendsClicked);

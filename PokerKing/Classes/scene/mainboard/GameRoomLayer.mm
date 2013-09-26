@@ -107,7 +107,7 @@ SEL_MenuHandler GameRoomLayer::onResolveCCBCCMenuItemSelector(CCObject * pTarget
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onLasVegasClicked", GameRoomLayer::onLasVegasClicked);
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onMonteCarloClicked", GameRoomLayer::onMonteCarloClicked);
     
-    CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onLeadBoardClicked", GameRoomLayer::onLeaderBoarderClicked);
+    CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onRankClicked", GameRoomLayer::onLeaderBoarderClicked);
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onSettingClicked", GameRoomLayer::onSettingClicked);
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onShopButtonClicked", GameRoomLayer::onShopButtonClicked);
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onFriendsClicked", GameRoomLayer::onFriendsClicked);
