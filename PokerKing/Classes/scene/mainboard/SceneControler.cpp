@@ -48,42 +48,46 @@ void SceneControler::gotoScene(GameScene gameScene)
             
             case GameRoom_Scene:
             scene = GameRoomScene::create();
-            CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(0.5f, scene, ccBLACK));
+            CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.2f, scene, ccBLACK));
             break;
             
             case Friends_Scene:
             scene = FriendsScene::create();
-            CCDirector::sharedDirector()->pushScene(scene);
+            CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.2f, scene, ccBLACK));
             break;
             
             case Shop_Scene:
             scene = ShopScene::create();
-            CCDirector::sharedDirector()->pushScene(scene);
+            CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.2f, scene, ccBLACK));
             break;
             
             case Rank_Scene:
             scene = RankingScene::create();
-            CCDirector::sharedDirector()->pushScene(scene);
+            CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.2f, scene, ccBLACK));
             break;
             
             case Task_Scene:
             scene = TaskScene::create();
-            CCDirector::sharedDirector()->pushScene(scene);
+            CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.2f, scene, ccBLACK));
             break;
             
             case Setting_Scene:
             scene = SettingScene::create();
-            CCDirector::sharedDirector()->pushScene(scene);
+            CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.2f, scene, ccBLACK));
             break;
             
             case Invitation_Scene:
             scene = InvitationScene::create();
-            CCDirector::sharedDirector()->pushScene(scene);
+            CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.2f, scene, ccBLACK));
             break;
             
             case Lottery_Scene:
             scene = LotteryScene::create();
             CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(0.5f, scene, ccBLACK));
+            break;
+            
+            case BackScene:
+            goBackScene();
             break;
         }
     
@@ -107,6 +111,13 @@ void SceneControler::afterAlert(cocos2d::CCNode *pNode, void *data)
 {
     if((bool)data)
     {
-        gotoScene(targetScene);
+        if(targetScene != BackScene)
+        {
+            gotoScene(targetScene);
+        }
+        else
+        {
+            goBackScene();
+        }
     }
 }

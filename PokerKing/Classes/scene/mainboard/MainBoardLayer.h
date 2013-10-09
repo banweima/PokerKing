@@ -36,6 +36,7 @@ private:
     CCMenuItemImage* mShopButton;
     
     CCSprite * mMaleFrame;
+    CCSprite * mChampionBK;
     
     CCLabelTTF * mUserName;
     CCLabelTTF * mUserLevel;
@@ -44,6 +45,8 @@ private:
     CCLabelTTF * mUserMedal;
     
     float mDuration;
+    
+    SimpleUserInfo * sUserInfo;
     
 public:
     CCB_STATIC_NEW_AUTORELEASE_OBJECT_WITH_INIT_METHOD(MainBoardLayer, create);
@@ -59,6 +62,8 @@ public:
     virtual cocos2d::extension::SEL_CCControlHandler onResolveCCBCCControlSelector(cocos2d::CCObject * pTarget, cocos2d::CCString * pSelectorName);
     virtual bool onAssignCCBMemberVariable(cocos2d::CCObject * pTarget, cocos2d::CCString * pMemberVariableName, cocos2d::CCNode * pNode);
     virtual void onNodeLoaded(cocos2d::CCNode * pNode, cocos2d::extension::CCNodeLoader * pNodeLoader);
+    
+    virtual void onEnter();
 
 private:
     void onBlackJackClicked(CCObject *pSender);
@@ -84,8 +89,8 @@ private:
     
     void showUserInfo(cocos2d::CCNode *pNode, void *data);
     
-
-    
+    void getRanking_Done(CCObject * data);
+    void addChampion(cocos2d::CCNode *pNode, void *data);
 };
 
 

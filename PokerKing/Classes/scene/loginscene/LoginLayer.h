@@ -28,6 +28,7 @@ private:
     CCLabelTTF* mText;
     CCSprite * mWarning;
     CCMenuItemImage * mWeibo;
+    CCSprite * mBackground;
     
 public:
     CCB_STATIC_NEW_AUTORELEASE_OBJECT_WITH_INIT_METHOD(LoginLayer, create);

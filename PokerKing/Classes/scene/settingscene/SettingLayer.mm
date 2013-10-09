@@ -16,6 +16,7 @@
 #include "UserInfo.h"
 #include "WhiteBoardLayer.h"
 #include "SceneControler.h"
+#include "Banner.h"
 
 SettingLayer::SettingLayer()
 : mHome(NULL)
@@ -55,6 +56,14 @@ void SettingLayer::setupLayer()
     CCNode * node = CCBUtility::loadCCB("ccbi/setting.ccbi", "SettingLayer", CCLayerLoader::loader(), this);
 
     this->addChild(node);
+    
+    int h = getWinH();
+    if(h>480)
+    {
+        Banner * banner = Banner::create();
+        banner->retain();
+        this->addChild(banner,-100);
+    }
     
     if(LoadStringFromXML(NeedBJInsurance) == "No")
     {

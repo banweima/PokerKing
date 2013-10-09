@@ -79,7 +79,8 @@ bool GameServer::doGameServerAction(CCObject *target, SEL_CallFuncO callback, st
     }
     else
     {
-        url = CCString::createWithFormat("%s%s?authToken=%s&account=%d", gameinfo->getGameServerUrl().c_str(),action.c_str(),gameinfo->getToken().c_str(),UserInfo::sharedUserInfo()->getUserID());
+        url = CCString::createWithFormat("%s%s", gameinfo->getGameServerUrl().c_str(),action.c_str());
+//        url = CCString::createWithFormat("%s%s?authToken=%s&account=%d", gameinfo->getGameServerUrl().c_str(),action.c_str(),gameinfo->getToken().c_str(),UserInfo::sharedUserInfo()->getUserID());
         postData = CCString::createWithFormat("authToken=%s&account=%d&%s",gameinfo->getToken().c_str(),UserInfo::sharedUserInfo()->getUserID(),postValue.c_str());
     }
     
@@ -88,7 +89,7 @@ bool GameServer::doGameServerAction(CCObject *target, SEL_CallFuncO callback, st
 
     CCLOG("postData=%s", postData->getCString());
     
-    std::string encryptedPost = CCString::createWithFormat("%s", Helpers::encryptBaseString(postData->m_sString).c_str())->m_sString;
+    std::string encryptedPost = CCString::createWithFormat("postdata=%s", Helpers::encryptBaseString(postData->m_sString).c_str())->m_sString;
     
     CCLOG("encryptedPost=%s", encryptedPost.c_str());
     

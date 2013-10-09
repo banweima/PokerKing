@@ -64,7 +64,7 @@ private:
     
     void onCancelClicked(CCObject *pSender);
     void onWeiboClicked(CCObject *pSender);
-    void mFriend(CCObject *pSender);
+    void onFriendClicked(CCObject *pSender);
     
     virtual void registerWithTouchDispatcher();
   
@@ -79,10 +79,8 @@ private:
     void showUserInfo();
     
     void getPlayerImage(CCNode* node, void* data);
-//
-//private:
-//    CCObject *mTarget;
-//    SEL_CallFuncND mCallFuncND;
+    
+    void sendInvitation_Done(cocos2d::CCNode * pNode, void *data);
 
 };
 

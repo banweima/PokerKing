@@ -35,7 +35,7 @@
 
 
 #define LoginServer_Dev "http://127.0.0.1:8080/CasinoGod/" //"http://121.199.13.234:8080/CasinoGod/"//
-#define LoginServer_Sandbox "http://112.124.3.221:8080/CasinoGod/"
+#define LoginServer_Sandbox "http://121.199.13.234:8080/CasinoGod/"
 #define LoginServer_Production "http://112.124.3.221:8080/CasinoGod/"
 
 

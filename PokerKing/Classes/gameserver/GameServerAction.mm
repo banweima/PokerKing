@@ -285,7 +285,21 @@ void GameServerAction::doLogin_Done(cocos2d::CCObject *data)
         GameInfo* gameInfo = GameInfo::sharedGameInfo();
     
         gameInfo->setToken(((CCString *)dict->objectForKey("token"))->getCString());
-        gameInfo->setGameServerUrl(((CCString *)dict->objectForKey("gameServerUrl"))->getCString());
+        gameInfo->setGameServerUrl(((CCString *)dict->objectForKey("gameServerUrl"))->m_sString);
+        if(dict->objectForKey("gameDownloadUrl"))
+        {
+            gameInfo->setGameDownloadUrl(((CCString *)dict->objectForKey("gameDownloadUrl"))->m_sString);
+        }
+        
+        if(dict->objectForKey("bannerImageUrl"))
+        {
+            gameInfo->setBannerImageUrl(((CCString *)dict->objectForKey("bannerImageUrl"))->m_sString);
+        }
+        
+        if(dict->objectForKey("bannerJumpUrl"))
+        {
+            gameInfo->setBannerJumpUrl(((CCString *)dict->objectForKey("bannerJumpUrl"))->m_sString);
+        }
         
         CCDictionary *userInfoDict = (CCDictionary *)dict->objectForKey("userinfo");
         
@@ -1024,35 +1038,35 @@ void GameServerAction::rejectFriendRequest_Done(cocos2d::CCObject *data)
     }
 }
 
-bool GameServerAction::getBlackjackRank(cocos2d::CCObject *target, SEL_CallFuncO callback)
-{
-    mTarget = target;
-    mCallFuncO = callback;
-
-    
-    GameServer * gServer = GameServer::sharedGameServer();
-    return gServer->doGameServerAction(this, callfuncO_selector(GameServerAction::rejectFriendRequest_Done), Act_rank_all, "");
-
-}
-
-void GameServerAction::getBlackjackRank_Done(cocos2d::CCObject *data)
-{
-    GameServerResponse *response = (GameServerResponse *)data;
-    CCLog("Response Code = %d", response->getResponseCode());
-    
-    if (response->getIsSuccess()) {
-        CCDictionary *dict = response->getResponseDictionary();
-        
-        if (mTarget && mCallFuncO) {
-                (mTarget->*mCallFuncO)(dict);
-            }        
-    } else {
-        CCLOG("getBlackjackRank Fail");
-        if (mTarget && mCallFuncO) {
-                (mTarget->*mCallFuncO)(NULL);
-            }
-    }
-}
+//bool GameServerAction::getBlackjackRank(cocos2d::CCObject *target, SEL_CallFuncO callback)
+//{
+//    mTarget = target;
+//    mCallFuncO = callback;
+//
+//    
+//    GameServer * gServer = GameServer::sharedGameServer();
+//    return gServer->doGameServerAction(this, callfuncO_selector(GameServerAction::rejectFriendRequest_Done), Act_rank_all, "");
+//
+//}
+//
+//void GameServerAction::getBlackjackRank_Done(cocos2d::CCObject *data)
+//{
+//    GameServerResponse *response = (GameServerResponse *)data;
+//    CCLog("Response Code = %d", response->getResponseCode());
+//    
+//    if (response->getIsSuccess()) {
+//        CCDictionary *dict = response->getResponseDictionary();
+//        
+//        if (mTarget && mCallFuncO) {
+//                (mTarget->*mCallFuncO)(dict);
+//            }        
+//    } else {
+//        CCLOG("getBlackjackRank Fail");
+//        if (mTarget && mCallFuncO) {
+//                (mTarget->*mCallFuncO)(NULL);
+//            }
+//    }
+//}
 
 
 bool GameServerAction::showTotalTimes(int typeId,cocos2d::CCObject *target, SEL_CallFuncO callback)

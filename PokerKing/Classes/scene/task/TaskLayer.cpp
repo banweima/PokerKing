@@ -13,11 +13,10 @@
 #include "GameServerAction.h"
 #include "Loading.h"
 #include "SimpleUserInfo.h"
-
+#include "Banner.h"
 
 TaskLayer::TaskLayer()
 : mDaily(NULL)
-, mAll(NULL)
 , pDailyTask(NULL)
 , pAllTask(NULL)
 , m_pDailyListView(NULL)
@@ -30,7 +29,6 @@ TaskLayer::TaskLayer()
 TaskLayer::~TaskLayer()
 {
     CC_SAFE_RELEASE(mDaily);
-    CC_SAFE_RELEASE(mAll);
     CC_SAFE_RELEASE(pDailyTask);
     CC_SAFE_RELEASE(pAllTask);
     CC_SAFE_RELEASE(m_pAllListView);
@@ -58,6 +56,14 @@ void TaskLayer::setupLayer()
     CCNode * node = CCBUtility::loadCCB("ccbi/task.ccbi", "TaskLayer", CCLayerLoader::loader(), this);
     this->addChild(node);
     
+    int h = getWinH();
+    if(h>480)
+    {
+        Banner * banner = Banner::create();
+        banner->retain();
+        this->addChild(banner,-100);
+    }
+    
     mWarning->setVisible(false);
     getAllTask();
 }
@@ -76,7 +82,7 @@ void TaskLayer::addListView()
             m_pDailyListView = CCListView::viewWithMode(CCListViewModeVertical);
             m_pDailyListView->retain();
             CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-            CCSize listSize = CCSizeMake(winSize.width, mAll->getPositionY() - 20);
+            CCSize listSize = CCSizeMake(winSize.width, mDaily->getPositionY() - 20);
     
             m_pDailyListView->setContentSize(listSize);
             m_pDailyListView->setDelegate(this);
@@ -99,7 +105,7 @@ void TaskLayer::addListView()
             m_pAllListView = CCListView::viewWithMode(CCListViewModeVertical);
             m_pAllListView->retain();
             CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-            CCSize listSize = CCSizeMake(winSize.width, mAll->getPositionY() - 20);
+            CCSize listSize = CCSizeMake(winSize.width, mDaily->getPositionY() - 20);
     
             m_pAllListView->setContentSize(listSize);
             m_pAllListView->setDelegate(this);
@@ -128,7 +134,7 @@ void TaskLayer::onNodeLoaded(cocos2d::CCNode * pNode,  cocos2d::extension::CCNod
 
 
 SEL_MenuHandler TaskLayer::onResolveCCBCCMenuItemSelector(CCObject * pTarget, CCString * pSelectorName) {
-    CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onAllClicked", TaskLayer::onAllClicked);
+//    CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onAllClicked", TaskLayer::onAllClicked);
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onDailyClicked", TaskLayer::onDailyClicked);
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onHomeClicked", TaskLayer::onHomeClicked);
     return NULL;
@@ -141,7 +147,7 @@ SEL_CCControlHandler TaskLayer::onResolveCCBCCControlSelector(CCObject * pTarget
 
 bool TaskLayer::onAssignCCBMemberVariable(CCObject * pTarget, CCString * pMemberVariableName, CCNode * pNode) {
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mDaily", CCMenuItemImage *, mDaily);
-    CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mAll", CCMenuItemImage *, mAll);
+//    CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mAll", CCMenuItemImage *, mAll);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mWarning", CCLabelTTF *, mWarning);
     
     return false;

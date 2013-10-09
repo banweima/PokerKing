@@ -104,7 +104,7 @@ static SinaWeibo *sinaweibo = nil;
 {
     NSLog(@"Post status %@", uploadString);
     
-    UIImage * image= [UIImage imageNamed:@"icon-0.png"];
+    UIImage * image= [UIImage imageNamed:@"Icon-0.png"];
     
     [sinaweibo requestWithURL:@"statuses/upload.json"
                                params:[NSMutableDictionary dictionaryWithObjectsAndKeys:uploadString, @"status",UIImagePNGRepresentation(image), @"pic", nil]
@@ -242,7 +242,11 @@ static SinaWeibo *sinaweibo = nil;
     }
     else if ([request.url hasSuffix:@"statuses/upload.json"])
     {
-        
+        NSDictionary * userInfo = [result retain];
+        for(NSObject * obj in [userInfo allKeys])
+        {
+            NSLog(@"key: %@, value: %@",obj, [userInfo objectForKey:obj]);
+        }
     }
     else if([request.url hasSuffix:@"friendships/create.json"])
     {

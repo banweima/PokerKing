@@ -17,6 +17,7 @@
 #include "GameKitFactory.h"
 #include "GameInfo.h"
 #include "CCBUtility.h"
+#include "Banner.h"
 
 #define LoginLayerTag   123
 
@@ -24,6 +25,7 @@ LoginLayer::LoginLayer()
 :mText(NULL)
 ,mWarning(NULL)
 ,mWeibo(NULL)
+,mBackground(NULL)
 {
     
 }
@@ -33,8 +35,8 @@ LoginLayer::~LoginLayer()
     CC_SAFE_RELEASE(mText);
     CC_SAFE_RELEASE(mWarning);
     CC_SAFE_RELEASE(mWeibo);
+    CC_SAFE_RELEASE(mBackground);
 }
-
 
 bool LoginLayer::init()
 {
@@ -54,10 +56,7 @@ void LoginLayer::setupLoginLayer()
 
     this->addChild(node,0,LoginLayerTag);
     
-    int w = getContentSize().width;
-    int h = getContentSize().height;
-    
-    mWeibo->setPosition(w /2 - mWeibo->getContentSize().width/2, h /5 - mWeibo->getContentSize().height);
+    mBackground->setScaleY(getWinH()/mBackground->getContentSize().height);
     
     mWarning->setVisible(false);
     mText = CCLabelTTF::create("", "Helvetica", 16);
@@ -92,6 +91,7 @@ SEL_CCControlHandler LoginLayer::onResolveCCBCCControlSelector(CCObject * pTarge
 bool LoginLayer::onAssignCCBMemberVariable(CCObject * pTarget, CCString * pMemberVariableName, CCNode * pNode) {
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mWarning", CCSprite *, mWarning);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mWeibo", CCMenuItemImage *, mWeibo);
+    CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mBackground", CCSprite *, mBackground);
     
     return false;
 }

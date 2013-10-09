@@ -27,7 +27,7 @@ private:
     CC_SYNTHESIZE(int, mLevel, Level);
     CC_SYNTHESIZE(long, mExp, Exp);
     CC_SYNTHESIZE(long, mGold, Gold);
-    
+    CC_SYNTHESIZE(std::string, mSNS, SNS);
     CC_SYNTHESIZE_READONLY(CCSprite *, mAvartaImage, AvartaIamge);
     
     CC_SYNTHESIZE(CCArray *, mTodayRecord, TodayRecord);

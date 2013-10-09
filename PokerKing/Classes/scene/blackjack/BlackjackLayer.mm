@@ -22,7 +22,7 @@
 #include "platform.h"
 #include "SimpleAudioEngine.h"
 #include "ImageController.h"
-
+#include "Banner.h"
 
 #define TopHeight 40;
 
@@ -137,6 +137,14 @@ void BlackjackLayer::setupLayer()
     CCNode * node = CCBUtility::loadCCB("ccbi/blackjack.ccbi", "BlackjackLayer", CCLayerLoader::loader(), this);
     this->addChild(node);
     
+    int wh = getWinH();
+    if(wh>480)
+    {
+        Banner * banner = Banner::create();
+        banner->retain();
+        this->addChild(banner,-100);
+    }
+    
     mDealerHand = PlayCardHand::create(true);
     mDealerHand->retain();
     mPlayerHand = PlayCardHand::create(false);
@@ -147,12 +155,14 @@ void BlackjackLayer::setupLayer()
     mDealerHand->setCardScale(0.8);
     mPlayerHand->setCardScale(0.8);
     
-    int w = getContentSize().width;
-    int h = getContentSize().height;
+    int w = mBackground->getContentSize().width;
+    int h = mBackground->getContentSize().height;
+    
     int menuH = 0;
     int notifyH = TopHeight;
     int tmpH = (h-menuH-notifyH)/2 + menuH;
     int handH = h/3;
+    
     mDealerHand->setPosition(ccp(w/2, tmpH + handH));
     mPlayerHand->setPosition(ccp(w/2, tmpH - handH));
     mPlayerSplitHand->setPosition(ccp(w/2, tmpH - handH));
@@ -180,12 +190,6 @@ void BlackjackLayer::setupLayer()
     mDealerWords = WordBoard::create();
     mDealerWords->retain();
     this->addChild(mDealerWords);
-    
-    mDealerWords->setVisible(false);
-    mDealerWords->setPosition(ccp(
-            mDealerFrameSprite->getPositionX() - mDealerFrameSprite->getContentSize().width/2 - 50,
-            mDealerFrameSprite->getPositionY()
-            ));
     
     
     mYesNoMenu->setVisible(false);
@@ -393,7 +397,7 @@ bool BlackjackLayer::onAssignCCBMemberVariable(CCObject * pTarget, CCString * pM
 
 void BlackjackLayer::onHomeClicked(CCObject * pSender)
 {
-    gotoOtherScene(MainBoard_Scene);
+    gotoOtherScene(BackScene);
 }
 
 void BlackjackLayer::onFriendsClicked(CCObject * pSender)
@@ -409,13 +413,9 @@ void BlackjackLayer::onRankClicked(CCObject * pSender)
 
 void BlackjackLayer::getPlayerImage(CCNode* node, void* data)
 {
-//    CCPoint pos = ccp(getWinW()*0.05, (getWinH() -  )*0.5);
-    CCPoint pos = ccp(mPlayerFrameSprite->getPosition().x + mPlayerFrameSprite->getContentSize().width/2, mPlayerFrameSprite->getPosition().y);
-
-    
     CCSprite* sprite = UserInfo::sharedUserInfo()->addAvartaToLayer(this);
     sprite->setScale(getWinW()*0.2f/sprite->getContentSize().width);
-    sprite->setPosition(pos);
+    sprite->setPosition(mPlayerFrameSprite->getPosition());
     sprite->setAnchorPoint(ccp(0,0.5));
     mPlayerFrameSprite->setVisible(false);
 }
@@ -436,16 +436,9 @@ void BlackjackLayer::getDealerImage(bool isBoss)
     }
     else
     {
-        dealer = CCString::createWithFormat("Dealer%d",dealerIndex);
+        dealer = CCString::createWithFormat("荷官 %d",dealerIndex);
     }
     
-//    mDealerImageSprite = CCSprite::createWithSpriteFrameName(dealer->getCString());
-//    
-//    float imageScale = getWinW()*0.2f/mDealerImageSprite->getContentSize().width;
-//    CCPoint pos = ccp(mDealerFrameSprite->getPosition().x + mDealerFrameSprite->getContentSize().width/2, mDealerFrameSprite->getPosition().y);
-//    mDealerImageSprite->setAnchorPoint(ccp(0.5,0.5));
-//    mDealerImageSprite->setScale(imageScale);
-//    mDealerImageSprite->setPosition(pos);
     
     if(dealerName)
     {
@@ -456,8 +449,6 @@ void BlackjackLayer::getDealerImage(bool isBoss)
         dealerName = CCLabelTTF::create(dealer->getCString(), "Helvetica", 12);
         
         dealerName->setAnchorPoint(ccp(0.5,0.5));
-//        dealerName->setPosition(ccp(mDealerImageSprite->getPositionX(),
-//        mDealerImageSprite->getPositionY() - mDealerImageSprite->getContentSize().height * imageScale/2 - dealerName->getContentSize().height/2 - 5));
         
         this->addChild(dealerName);
     }
@@ -487,24 +478,27 @@ void BlackjackLayer::showBossImage(cocos2d::CCObject *data)
 {
     if(data)
     {
-        //CCSprite * bossImage = (CCSprite *) data;
-        
         mDealerImageSprite = (CCSprite *) data;
         
         
         float imageScale = getWinW()*0.2f/mDealerImageSprite->getContentSize().width;
-        CCPoint pos = ccp(mDealerFrameSprite->getPosition().x + mDealerFrameSprite->getContentSize().width/2, mDealerFrameSprite->getPosition().y);
-        mDealerImageSprite->setAnchorPoint(ccp(0.5,0.5));
+
+        mDealerImageSprite->setAnchorPoint(ccp(1,0.5));
         mDealerImageSprite->setScale(imageScale);
-        mDealerImageSprite->setPosition(pos);
+        mDealerImageSprite->setPosition(mDealerFrameSprite->getPosition());
         
         if (dealerName) {
-            dealerName->setPosition(ccp(mDealerImageSprite->getPositionX(),
+            dealerName->cocos2d::CCNode::setAnchorPoint(ccp(0.5,0.5));
+            dealerName->setPosition(ccp(mDealerImageSprite->getPositionX() - mDealerImageSprite->getContentSize().width * imageScale/2,
             mDealerImageSprite->getPositionY() - mDealerImageSprite->getContentSize().height * imageScale/2 - dealerName->getContentSize().height/2 - 5));
         }
         
         this->addChild(mDealerImageSprite);
-        mDealerFrameSprite->setVisible(false);
+        
+        mDealerWords->setAnchorPoint(ccp(0.5,0.5));
+        mDealerWords->setPosition(ccp(mDealerImageSprite->getPositionX() - mDealerImageSprite->getContentSize().width * imageScale - mDealerWords->getBgSprite1()->getContentSize().width * mDealerWords->getBgSprite1()->getScaleX()/2,
+            mDealerImageSprite->getPositionY()
+            ));
     }
 }
 
@@ -573,7 +567,7 @@ void BlackjackLayer::showStartButton()
     mChipCount->setPositionY(mChipCount->getPositionY() - 60);
     mChipCount->setVisible(true);
     
-    mCurrentBet = MIN(mCurrentBet,mRoomLevelInfo->getMaxHand());
+    mCurrentBet = MIN(mCurrentBet,mRoomLevelInfo->getMaxHand() == 0? mCurrentBet : mRoomLevelInfo->getMaxHand());
     mChipCount->setCount(mCurrentBet);
     
     mIncreaseBetButton->setVisible(true);
@@ -876,11 +870,12 @@ void BlackjackLayer::notifyDealerHitDone()
 {
     if(mHitAllowed && mPlayerHand->getNumberOfCards() == 2)
     {
+        //No insurance
         if (mDealerHand->getCard(1)->getCardType() == Ace && needInsurance)
         {
             this->showInsuranceRequirement();
         }
-    } 
+    }
 }
 
 void BlackjackLayer::notifyDealerToAddNextCard()
@@ -972,7 +967,7 @@ void BlackjackLayer::showResult()
 ResultType BlackjackLayer::checkResult(PlayCardHand * playerHand, PlayCardHand * dealerHand)
 {
     ResultType type = Lose;
-    dealerHand->hasBlackjack();
+//    dealerHand->hasBlackjack();
     
     if (playerHand->getCardCount() >21) {
             type = Lose;
@@ -1171,7 +1166,7 @@ void BlackjackLayer::uploadMatchResult_Done(CCNode* pSender, void* data)
     else
     {
         
-        NSString * msg = [[NSString alloc] initWithFormat:@"非常抱歉，服务器未能正常处理该次牌局的结果，请记录下牌局ID:%d  通过QQ群（328230012），可以获得赔偿！",(int)BattleInfo::sharedBattleInfo()->getBattleID()];
+        NSString * msg = @"非常抱歉，服务器未能正常处理该次牌局的结果.";
         
         UIAlertView *alerView =  [[UIAlertView alloc] initWithTitle:@"BlackJack"
                                 message:msg
@@ -1353,6 +1348,7 @@ void BlackjackLayer::startOnlineBattle_done(CCNode* pSender, void* data)
                 
                 mBackground->setVisible(false);
                 mBossBackground->setVisible(true);
+                mBossBackground->setAnchorPoint(ccp(0,0));
                 mBossBackground->setPosition(mBackground->getPosition());
             }
             isRaidBoss = true;
@@ -1551,7 +1547,7 @@ void BlackjackLayer::shareBoss_Done(CCObject* data)
 
 void BlackjackLayer::gotoOtherScene(GameScene otherScene)
 {
-    if(isInBattle && otherScene == MainBoard_Scene)
+    if(isInBattle && otherScene == BackScene)
     {
         SceneControler::sharedSceneControler()->gotoSceneWithAlert(otherScene, "21点", "您已经在牌局中，现在离开无法收回已下注的金币。\r\n确定要离开吗？", this);
     }
@@ -1586,7 +1582,7 @@ void BlackjackLayer::friendSupport()
     
     int friendSupportValue = FriendSupportRate + friendsCount;
     
-    friendSupportValue = (friendSupportValue > 20)?90:friendSupportValue;
+    friendSupportValue = (friendSupportValue > 20)?20:friendSupportValue;
     
     if(supportRand < friendSupportValue)
     {
@@ -1652,7 +1648,10 @@ void BlackjackLayer::showDealerCard()
 
 void BlackjackLayer::gotoShop(cocos2d::CCNode *pSender, void *data)
 {
-    gotoOtherScene(Shop_Scene);
+    if((bool)data)
+    {
+        gotoOtherScene(Shop_Scene);
+    }
 }
 
 void BlackjackLayer::onEnter()

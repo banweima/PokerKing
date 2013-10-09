@@ -26,7 +26,7 @@ private:
     CC_SYNTHESIZE(std::string, mUserName, UserName);
     CC_SYNTHESIZE(std::string, mThumbnail, Thumbnail);
     CC_SYNTHESIZE(std::string, mGender, Gender); //0: Male; 1: Female; 2:Unknown
-    CC_SYNTHESIZE(int, mLevel, Level);
+    CC_SYNTHESIZE(long, mLevel, Level);
     CC_SYNTHESIZE(long, mExp, Exp);
     CC_SYNTHESIZE(long, mGold, Gold);
     CC_SYNTHESIZE(long, mDiamond, Diamond);

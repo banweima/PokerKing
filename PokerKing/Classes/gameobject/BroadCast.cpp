@@ -54,14 +54,15 @@ bool BroadCast::init()
         mContentText =  CCLabelTTF::create("", "Helvetica", 18);
         mContentText->retain();
         
-        int w = getWinW() - 10;
+        int w = getWinW();
         int y = getWinH();
         mBgSprite->setScaleX(w/mBgSprite->getContentSize().width);
-        mBgSprite->setPosition(ccp(10, 0.8 * y));
+        mBgSprite->setPosition(ccp(0, 0.8 * y));
         mBgSprite->setAnchorPoint(ccp(0,0.5));
         mBgSprite->setVisible(false);
         
-        this->addChild(mBgSprite,10);
+        
+        this->addChild(mBgSprite,200);
         this->addChild(mContentText,100);
         
         mContentText->setVisible(false);

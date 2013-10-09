@@ -58,7 +58,7 @@
 
 #define Act_friends_invitation_access  "accessCode.action"
 
-//#define Act_rank_blackjack "showBlackJackRank.action"
+#define Act_rank_blackjack "showBlackJackRank.action"
 
 #define Act_rank_all "showTotalTimes.action"
 

@@ -34,6 +34,9 @@ mLoginServerUrl(""),
 mGameServerUrl(""),
 mToken(""),
 mDeviceToken(NULL)
+, mGameDownloadUrl("")
+, mBannerJumpUrl("")
+, mBannerImageUrl("")
 {}
 
 GameInfo::~GameInfo()
@@ -64,6 +67,9 @@ bool GameInfo::init()
     mFriendsList = CCArray::create();
     mFriendsList->retain();
     
+    mGameDownloadUrl = "https://itunes.apple.com/cn/app/wei-bo/id350962117?l=en&mt=8";
+    mBannerJumpUrl = "http://www.weibo.com";
+    mBannerImageUrl = "http://stock.591hx.com/images/hnimg/201309/11/62/4570829793271345294.jpg";
     return true;
 }
 

@@ -452,6 +452,16 @@ void FriendsLayer::getNormalPlayer_Done(cocos2d::CCObject *data)
         
         CCDictionary *dict = (CCDictionary *)data;
         
+        CCArray * snsList = (CCArray *)dict->objectForKey("snsId");
+    
+        if(!snsList || snsList->count() < 1)
+        {
+            Loading::sharedLoading()->removeLoading();
+            mWarning->setVisible(true);
+            mWarning->setString("暂时没有排行信息！");
+            return;
+        }
+        
         CCArray * etList = (CCArray *)dict->objectForKey("simpleUser");
     
         if(!etList || etList->count() < 1)
@@ -471,6 +481,10 @@ void FriendsLayer::getNormalPlayer_Done(cocos2d::CCObject *data)
             mSimpleUserInfo = SimpleUserInfo::create();
             mSimpleUserInfo->retain();
             mSimpleUserInfo->parseSimpleUserInfo(dic);
+            if(snsList->objectAtIndex(i))
+            {
+                mSimpleUserInfo->setSNS(((CCString *)snsList->objectAtIndex(i))->getCString());
+            }
             mSimpleUserInfo->retrieveAvartaImage(this, callfuncND_selector(FriendsLayer::addSimpleUser));
         }
     }
@@ -498,6 +512,16 @@ void FriendsLayer::getRealFriends_Done(cocos2d::CCObject *data)
         
         CCDictionary *dict = (CCDictionary *)data;
         
+        CCArray * snsList = (CCArray *)dict->objectForKey("snsId");
+    
+        if(!snsList || snsList->count() < 1)
+        {
+            Loading::sharedLoading()->removeLoading();
+            mWarning->setVisible(true);
+            mWarning->setString("暂时没有排行信息！");
+            return;
+        }
+        
         CCArray * etList = (CCArray *)dict->objectForKey("friends");
     
         if(!etList || etList->count() < 1)
@@ -515,7 +539,10 @@ void FriendsLayer::getRealFriends_Done(cocos2d::CCObject *data)
 
             mSimpleUserInfo = SimpleUserInfo::create();
             mSimpleUserInfo->parseSimpleUserInfo(dic);
-            mSimpleUserInfo->retrieveAvartaImage(NULL, NULL);
+            if(snsList->objectAtIndex(i))
+            {
+                mSimpleUserInfo->setSNS(((CCString *)snsList->objectAtIndex(i))->getCString());
+            }
             mSimpleUserInfo->retrieveAvartaImage(this, callfuncND_selector(FriendsLayer::addSimpleUser));
         }
     }
@@ -543,6 +570,16 @@ void FriendsLayer::getFriendsRequest_Done(cocos2d::CCObject *data)
         
         CCDictionary *dict = (CCDictionary *)data;
         
+        CCArray * snsList = (CCArray *)dict->objectForKey("snsId");
+    
+        if(!snsList || snsList->count() < 1)
+        {
+            Loading::sharedLoading()->removeLoading();
+            mWarning->setVisible(true);
+            mWarning->setString("暂时没有排行信息！");
+            return;
+        }
+        
         CCArray * etList = (CCArray *)dict->objectForKey("requestFriends");
     
         if(!etList || etList->count() < 1)
@@ -562,6 +599,10 @@ void FriendsLayer::getFriendsRequest_Done(cocos2d::CCObject *data)
 
             mSimpleUserInfo = SimpleUserInfo::create();
             mSimpleUserInfo->parseSimpleUserInfo(dic);
+            if(snsList->objectAtIndex(i))
+            {
+                mSimpleUserInfo->setSNS(((CCString *)snsList->objectAtIndex(i))->getCString());
+            }
             mSimpleUserInfo->retrieveAvartaImage(this, callfuncND_selector(FriendsLayer::addSimpleUser));
             
         }

@@ -21,6 +21,7 @@
 #include "BroadCast.h"
 #include "SceneControler.h"
 #include "BossBoardLayer.h"
+#include "Banner.h"
 
 GameRoomLayer::GameRoomLayer()
 : mHongKong(NULL)
@@ -72,6 +73,14 @@ void GameRoomLayer::setupLayer()
     CCNode * node = CCBUtility::loadCCB("ccbi/gameroom.ccbi", "GameRoomLayer", CCLayerLoader::loader(), this);
 
     this->addChild(node);
+    
+    int h = getWinH();
+    if(h>480)
+    {
+        Banner * banner = Banner::create();
+        banner->retain();
+        this->addChild(banner,-100);
+    }
     
     mUserName->setString(UserInfo::sharedUserInfo()->getUserName().c_str());
     
@@ -174,10 +183,11 @@ void GameRoomLayer::onHongKongClicked(cocos2d::CCObject *pSender)
     
     if(mHongKong != NULL) {
         mHongKong->runAction(CCSequence::create(
-                                                    CCRotateTo::create(mDuration, 0),
-                                                    CCCallFuncN::create(this, callfuncN_selector(GameRoomLayer::goToHongkong)),
-                                                    NULL
-                                                    ));
+                                    CCScaleTo::create(mDuration,0.9),
+                                    CCScaleTo::create(mDuration,1.0),
+                                    CCCallFuncN::create(this, callfuncN_selector(GameRoomLayer::goToHongkong)),
+                                    NULL
+                                    ));
     }
 }
 
@@ -190,10 +200,11 @@ void GameRoomLayer::onMacauClicked(cocos2d::CCObject *pSender)
     
     if(mMacau != NULL) {
         mMacau->runAction(CCSequence::create(
-                                                    CCRotateTo::create(mDuration, 0),
-                                                    CCCallFuncN::create(this, callfuncN_selector(GameRoomLayer::goToMacau)),
-                                                    NULL
-                                                    ));
+                                    CCScaleTo::create(mDuration,0.9),
+                                    CCScaleTo::create(mDuration,1.0),
+                                    CCCallFuncN::create(this, callfuncN_selector(GameRoomLayer::goToMacau)),
+                                    NULL
+                                    ));
     }
 }
 
@@ -206,10 +217,11 @@ void GameRoomLayer::onLasVegasClicked(cocos2d::CCObject *pSender)
     
     if(mLasVegas != NULL) {
         mLasVegas->runAction(CCSequence::create(
-                                                    CCRotateTo::create(mDuration, 0),
-                                                    CCCallFuncN::create(this, callfuncN_selector(GameRoomLayer::goToLasVegas)),
-                                                    NULL
-                                                    ));
+                                    CCScaleTo::create(mDuration,0.9),
+                                    CCScaleTo::create(mDuration,1.0),
+                                    CCCallFuncN::create(this, callfuncN_selector(GameRoomLayer::goToLasVegas)),
+                                    NULL
+                                    ));
     }
 }
 
@@ -222,10 +234,11 @@ void GameRoomLayer::onMonteCarloClicked(cocos2d::CCObject *pSender)
     
     if(mMonteCarlo != NULL) {
         mMonteCarlo->runAction(CCSequence::create(
-                                                        CCRotateTo::create(mDuration, 0),
-                                                        CCCallFuncN::create(this, callfuncN_selector(GameRoomLayer::goToMonteCarlo)),
-                                                        NULL
-                                                        ));
+                                    CCScaleTo::create(mDuration,0.9),
+                                    CCScaleTo::create(mDuration,1.0),
+                                    CCCallFuncN::create(this, callfuncN_selector(GameRoomLayer::goToMonteCarlo)),
+                                    NULL
+                                    ));
     }
 }
 
@@ -292,7 +305,7 @@ void GameRoomLayer::goToGameScene(RoomLevelInfo *levelInfo)
 
 void GameRoomLayer::onHomeClicked(cocos2d::CCObject *pSender)
 {
-    SceneControler::sharedSceneControler()->gotoScene(MainBoard_Scene);
+    SceneControler::sharedSceneControler()->goBackScene();
 }
 
 void GameRoomLayer::onLeaderBoarderClicked(cocos2d::CCObject *pSender)

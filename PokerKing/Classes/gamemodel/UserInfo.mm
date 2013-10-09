@@ -52,7 +52,7 @@ void UserInfo::parseUserInfo(CCDictionary * userInfoDict)
 //    this->setUserName(((CCString *)userInfoDict->objectForKey("nickName"))->getCString());
 //    this->setGender(((CCString *)userInfoDict->objectForKey("gender"))->getCString());
 //    this->setThumbnail(((CCString *)userInfoDict->objectForKey("image"))->getCString());
-    this->setLevel(((CCString *)userInfoDict->objectForKey("level"))->intValue());
+    this->setLevel(((CCString *)userInfoDict->objectForKey("level"))->doubleValue());
     this->setExp(((CCString *)userInfoDict->objectForKey("exp"))->doubleValue());
     this->setGold(((CCString *)userInfoDict->objectForKey("gold"))->doubleValue());
     this->setDiamond(((CCString *)userInfoDict->objectForKey("diamond"))->doubleValue());
@@ -151,7 +151,7 @@ void UserInfo::retrieveAvartaImage(cocos2d::CCObject *target, SEL_CallFuncND cal
             const char * imgPathName = (CCFileUtils::sharedFileUtils()->getWriteablePath() + PlayerImageFileName).c_str();
             
             
-            if(img->initWithImageFile(imgPathName))
+            if(img->initWithImageFileThreadSafe(imgPathName))
             {
                 CCLog("img size = %d, %d", img->getWidth(), img->getHeight());
 
@@ -185,7 +185,7 @@ void UserInfo::retrieveAvartaImage(cocos2d::CCObject *target, SEL_CallFuncND cal
 
 void UserInfo::retrieveAvartaImage_Done(cocos2d::CCNode *node, void *data)
 {
-    CCLog("retrieveAvartaImage_Done");
+    CCLog("retrieveAvartaImage_Done: %d", mUserID);
     
     CCTexture2D* tex2d = (CCTexture2D*)data;
     

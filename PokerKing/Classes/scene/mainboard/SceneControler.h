@@ -29,7 +29,8 @@ enum GameScene
     Invitation_Scene,
     VideoPoker_Scene,
     Lottery_Scene,
-    Texas_Scene
+    Texas_Scene,
+    BackScene
 };
 
 

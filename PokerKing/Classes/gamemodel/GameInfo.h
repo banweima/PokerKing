@@ -49,6 +49,10 @@ private:
     
     CC_SYNTHESIZE(std::string, mLoginServerUrl, LoginServerUrl);
     CC_PROPERTY(std::string, mGameServerUrl, GameServerUrl);
+    
+    CC_SYNTHESIZE(std::string, mGameDownloadUrl, GameDownloadUrl);
+    CC_SYNTHESIZE(std::string, mBannerJumpUrl, BannerJumpUrl);
+    CC_SYNTHESIZE(std::string, mBannerImageUrl, BannerImageUrl);
     CC_SYNTHESIZE(std::string, mToken, Token);
     
     CC_SYNTHESIZE(GameType, mCurrentGameType, CurrentGameType);

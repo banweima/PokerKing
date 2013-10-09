@@ -32,7 +32,7 @@ private:
     CCLabelTTF * mNumber;
     CCLabelTTF * mCodeInput;
     CCLabelTTF * mInviteCode;
-
+    CCLabelTTF * mFriendsNumber;
 public:
     CCB_STATIC_NEW_AUTORELEASE_OBJECT_WITH_INIT_METHOD(InvitationLayer, create);
     bool init();

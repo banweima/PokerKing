@@ -14,6 +14,7 @@
 #include "Loading.h"
 #include "SimpleUserInfo.h"
 #include "RankInfo.h"
+#include "Banner.h"
 
 RankingLayer::RankingLayer()
 : mToday(NULL)
@@ -58,6 +59,14 @@ void RankingLayer::setupLayer()
 {
     CCNode * node = CCBUtility::loadCCB("ccbi/rank.ccbi", "RankLayer", CCLayerLoader::loader(), this);
     this->addChild(node);
+    
+    int wh = getWinH();
+    if(wh>480)
+    {
+        Banner * banner = Banner::create();
+        banner->retain();
+        this->addChild(banner,-100);
+    }
     
     mWarning->setVisible(false);
     
@@ -189,11 +198,11 @@ void RankingLayer::CCListView_cellForRow(cocos2d::extension::CCListView *listVie
     
     if(isTodayRank)
     {
-        cellValue = CCString::createWithFormat("%s - %d", ((SimpleUserInfo *)pTodayUsers->objectAtIndex(data->nRow))->getUserName().c_str(),((RankInfo *) pTodayRanking->objectAtIndex(data->nRow))->getWinMoney())->getCString();
+        cellValue = CCString::createWithFormat("%s    %d", ((SimpleUserInfo *)pTodayUsers->objectAtIndex(data->nRow))->getUserName().c_str(),((RankInfo *) pTodayRanking->objectAtIndex(data->nRow))->getWinMoney())->getCString();
     }
     else
     {
-        cellValue = CCString::createWithFormat("%s - %d",((SimpleUserInfo *)pAllUsers->objectAtIndex(data->nRow))->getUserName().c_str(), ((RankInfo *) pAllRanking->objectAtIndex(data->nRow))->getWinMoney())->getCString();
+        cellValue = CCString::createWithFormat("%s    %d",((SimpleUserInfo *)pAllUsers->objectAtIndex(data->nRow))->getUserName().c_str(), ((RankInfo *) pAllRanking->objectAtIndex(data->nRow))->getWinMoney())->getCString();
 
     }
     
@@ -212,7 +221,6 @@ void RankingLayer::CCListView_cellForRow(cocos2d::extension::CCListView *listVie
     frameSprite->setScale(fScale);
     frameSprite->setPosition(ccp(cellSize.width * 0.05 + (bgSprite->getPositionX() - bgSprite->getContentSize().width/2), cellSize.height/2));
 
-    CCLOG("Trying get avarta!!");
     CCSprite * playerImage = NULL;
     if (isTodayRank) {
       
@@ -230,6 +238,8 @@ void RankingLayer::CCListView_cellForRow(cocos2d::extension::CCListView *listVie
         playerImage->setAnchorPoint(ccp(0,0.5));
         playerImage->setScale(bgSprite->getContentSize().height/playerImage->getContentSize().height);
         playerImage->setPosition(frameSprite->getPosition());
+        
+        playerImage->removeFromParentAndCleanup(false);
         
         cell->addChild(playerImage);
     }
@@ -292,7 +302,6 @@ void RankingLayer::getRanking_Done(CCObject * data)
     {
         if(isTodayRank)
         {
-            
             pTodayRanking = CCArray::create();
             pTodayRanking->retain();
             
@@ -301,7 +310,6 @@ void RankingLayer::getRanking_Done(CCObject * data)
         }
         else
         {
-
             pAllRanking = CCArray::create();
             pAllRanking->retain();
 
@@ -340,7 +348,16 @@ void RankingLayer::getRanking_Done(CCObject * data)
             }
             
         }
-
+        
+        CCArray * snsList = (CCArray *)dict->objectForKey("snsId");
+    
+        if(!snsList || snsList->count() < 1)
+        {
+            Loading::sharedLoading()->removeLoading();
+            mWarning->setVisible(true);
+            mWarning->setString("暂时没有排行信息！");
+            return;
+        }
         
         CCArray * userList = (CCArray *)dict->objectForKey("simpleUser");
     
@@ -362,6 +379,10 @@ void RankingLayer::getRanking_Done(CCObject * data)
             mSimpleUserInfo = SimpleUserInfo::create();
             mSimpleUserInfo->retain();
             mSimpleUserInfo->parseSimpleUserInfo(dic);
+            if(snsList->objectAtIndex(i))
+            {
+                mSimpleUserInfo->setSNS(((CCString *)snsList->objectAtIndex(i))->getCString());
+            }
             mSimpleUserInfo->retrieveAvartaImage(this, callfuncND_selector(RankingLayer::addSimpleUser));
         }
         //addListView();

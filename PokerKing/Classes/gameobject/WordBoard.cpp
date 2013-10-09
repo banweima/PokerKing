@@ -41,8 +41,6 @@ bool WordBoard::init()
         
         this->addChild(mBgSprite1);
         this->addChild(mTextLabel);
-        //        mBgSprite->addChild(mCountText);
-        //        mCountText->setPosition(ccp(mBgSprite->getContentSize().width/2, mBgSprite->getContentSize().height/2));
         
         mBgSprite1->setScaleX(0.5);
 

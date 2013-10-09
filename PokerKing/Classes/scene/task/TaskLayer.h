@@ -29,7 +29,7 @@ class TaskLayer : public CCLayer
 private:
     
     CCMenuItemImage * mDaily;
-    CCMenuItemImage * mAll;
+//    CCMenuItemImage * mAll;
 
     CCArray * pDailyTask;
     CCArray * pAllTask;

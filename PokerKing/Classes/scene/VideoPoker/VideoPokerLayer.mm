@@ -21,7 +21,7 @@
 #include "Loading.h"
 #include "BattleInfo.h"
 #include "GameServerAction.h"
-
+#include "Banner.h"
 
 
 VideoPokerLayer::VideoPokerLayer()
@@ -75,6 +75,15 @@ void VideoPokerLayer::setupLayer()
 {
     CCNode * node = CCBUtility::loadCCB("ccbi/videopoker.ccbi", "VideoPokerLayer", CCLayerLoader::loader(), this);
     this->addChild(node);
+
+    int wh = getWinH();
+    if(wh>480)
+    {
+        Banner * banner = Banner::create();
+        banner->retain();
+        this->addChild(banner,-100);
+    }
+
 
     mPlayerHand = PlayCardHand::create(false);
     
@@ -165,7 +174,7 @@ void VideoPokerLayer::onRankClicked(CCObject * pSender)
 
 void VideoPokerLayer::onHomeClicked(CCObject * pSender)
 {
-    gotoOtherScene(MainBoard_Scene);
+    gotoOtherScene(BackScene);
 }
 
 void VideoPokerLayer::onSettingClicked(CCObject * pSender)
@@ -176,7 +185,7 @@ void VideoPokerLayer::onSettingClicked(CCObject * pSender)
 
 void VideoPokerLayer::gotoOtherScene(GameScene otherScene)
 {
-    if(!mIsFirstHit && otherScene == MainBoard_Scene)
+    if(!mIsFirstHit && otherScene == BackScene)
     {
         SceneControler::sharedSceneControler()->gotoSceneWithAlert(otherScene, "翻翻乐", "您已经在牌局中，现在离开无法收回已下注的金币。\r\n确定要离开吗？", this);
     }
@@ -620,10 +629,10 @@ void VideoPokerLayer::friendSupport()
         this->addChild(friendSprite);
 
         friendSprite->runAction(CCSequence::create(
-                                    CCMoveTo::create(1, ccp(getWinW() - friendSprite->getContentSize().width,friendSprite->getPositionY())),
-                                    CCDelayTime::create(0.5),
-                                    CCMoveTo::create(1, ccp(getWinW(),friendSprite->getPositionY())),
+                                    CCMoveTo::create(0.5, ccp(getWinW() - friendSprite->getContentSize().width,friendSprite->getPositionY())),
                                     CCCallFunc::create(this, callfunc_selector(VideoPokerLayer::showFriendSupportMessage)),
+                                    CCDelayTime::create(0.5),
+                                    CCMoveTo::create(0.5, ccp(getWinW(),friendSprite->getPositionY())),
                                     NULL));
     }
 }

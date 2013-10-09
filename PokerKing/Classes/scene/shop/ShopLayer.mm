@@ -11,6 +11,8 @@
 #include "StoreKitFactory.h"
 #include "NumbersLayer.h"
 #include "SceneControler.h"
+#include "Banner.h"
+
 
 ShopLayer::ShopLayer()
 : mShopBanner(NULL)
@@ -61,6 +63,16 @@ void ShopLayer::setupLayer()
 {
     CCNode * node = CCBUtility::loadCCB("ccbi/shop.ccbi", "ShopLayer", CCLayerLoader::loader(), this);
     this->addChild(node);
+    
+    int h = getWinH();
+    if(h>480)
+    {
+        Banner * banner = Banner::create();
+        banner->retain();
+        this->addChild(banner,-100);
+    }
+    
+    
     showUserInfo();
     isItemSales = true;
     getItemInfo();
@@ -418,6 +430,8 @@ void ShopLayer::showUserInfo()
 {
     mUserDiamond->setString(CCString::createWithFormat("%d",UserInfo::sharedUserInfo()->getDiamond())->getCString());
     mUserGold->setString(CCString::createWithFormat("%d",UserInfo::sharedUserInfo()->getGold())->getCString());
+    mUserItem->setString(CCString::createWithFormat("%d",UserInfo::sharedUserInfo()->getMagicItemAmount(MagicItem_Switch_ID))->getCString());
+    
     mUserItem->setString(CCString::createWithFormat("%d",UserInfo::sharedUserInfo()->getMagicItemAmount(MagicItem_Switch_ID))->getCString());
 }
 

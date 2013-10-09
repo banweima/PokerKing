@@ -318,15 +318,16 @@ int processPostTask(CCHttpRequest *request, write_callback callback, void *strea
             break;
         }
         
-        struct curl_slist *headers=NULL;
-        headers = curl_slist_append(headers, "Content-Type: text/xml");
-        
-
-        /* pass our list of custom made headers */
-        code = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-        if (code != CURLE_OK) {
-            break;
-        }
+        //Banson Add for "Content-Type: text/xml"
+//        struct curl_slist *headers=NULL;
+//        headers = curl_slist_append(headers, "Content-Type: text/xml");
+//        
+//
+//        /* pass our list of custom made headers */
+//        code = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+//        if (code != CURLE_OK) {
+//            break;
+//        }
         
         code = curl_easy_setopt(curl, CURLOPT_POST, 1);
         if (code != CURLE_OK) {

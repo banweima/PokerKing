@@ -32,7 +32,8 @@
 #include "WhiteBoardLayer.h"
 #include "BossBoardLayer.h"
 #include "SceneControler.h"
-
+#include "RankInfo.h"
+#include "Banner.h"
 
 static int isFirstTimeEnter=0;
 
@@ -49,6 +50,7 @@ MainBoardLayer::MainBoardLayer()
 ,mUserGold(NULL)
 ,mUserDiamond(NULL)
 ,mUserMedal(NULL)
+, mChampionBK(NULL)
 {}
 
 MainBoardLayer::~MainBoardLayer()
@@ -64,6 +66,7 @@ MainBoardLayer::~MainBoardLayer()
     CC_SAFE_RELEASE(mUserGold);
     CC_SAFE_RELEASE(mUserDiamond);
     CC_SAFE_RELEASE(mUserMedal);
+    CC_SAFE_RELEASE(mChampionBK);
 }
 
 bool MainBoardLayer::init()
@@ -87,6 +90,14 @@ void MainBoardLayer::setupLayer()
 
     this->addChild(node);
     
+    int h = getWinH();
+    if(h>480)
+    {
+        Banner * banner = Banner::create();
+        banner->retain();
+        this->addChild(banner,-100);
+    }
+    
     isFirstTimeEnter++;
     
     mShopButton->runAction(CCRepeatForever::create(
@@ -95,8 +106,8 @@ void MainBoardLayer::setupLayer()
     showUserInfo(NULL, (void *) true);
     
     BroadCast::sharedBroadCast()->addBCToLayer(this);
-    
 
+    GameServerAction::sharedGameServerAction()->showTotalTimes(3,this, callfuncO_selector(MainBoardLayer::getRanking_Done));
     
     if(isFirstTimeEnter < 2)
     {
@@ -142,6 +153,7 @@ bool MainBoardLayer::onAssignCCBMemberVariable(CCObject * pTarget, CCString * pM
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mLottery", CCMenuItemImage *, mLottery);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mShopButton", CCMenuItemImage *, mShopButton);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mMaleFrame", CCSprite *, mMaleFrame);
+    CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mChampionBK", CCSprite *, mChampionBK);
     
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mUserName", CCLabelTTF * , mUserName);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mUserLevel", CCLabelTTF * , mUserLevel);
@@ -157,13 +169,10 @@ void MainBoardLayer::onBlackJackClicked(cocos2d::CCObject *pSender)
     if(mBlackJack != NULL) {
         
         mBlackJack->runAction(CCSequence::create(
-                                    //CCBlink::create(mDuration, 10),
+                                    CCScaleTo::create(mDuration,1.0),
+                                    CCScaleTo::create(mDuration,1.2),
                                     CCCallFuncN::create(this, callfuncN_selector(MainBoardLayer::goToBlackjack)),
                                     NULL));
-        
-        NotificationFactory::CancelAllNotification();
-//        mBlackJack->runAction(CCRepeatForever::create(
-//        CCRotateBy::create(mDuration, 10)));
         
     }
     
@@ -192,8 +201,11 @@ void MainBoardLayer::onCaribbeanClicked(cocos2d::CCObject *pSender)
 //    NotificationFactory::RegisterLocalNotification(nfData);
     
     mCaribbean->runAction(CCSequence::create(
-                                    //CCBlink::create(mDuration, 10),
+                                    
+                                    CCScaleTo::create(mDuration,1.0),
+                                    CCScaleTo::create(mDuration,0.75),
                                     CCCallFuncN::create(this, callfuncN_selector(MainBoardLayer::goToCaribbean)),
+
                                     NULL));
     }
     
@@ -204,8 +216,8 @@ void MainBoardLayer::onVideoPokerClicked(cocos2d::CCObject *pSender)
     if(mVideoPoker != NULL) {
         
         mVideoPoker->runAction(CCSequence::create(
-                                    //CCBlink::create(mDuration, 10),
-                                    CCScaleTo::create(mDuration,1.1),
+                                    CCScaleTo::create(mDuration,1.0),
+                                    CCScaleTo::create(mDuration,1.2),
                                     CCCallFuncN::create(this, callfuncN_selector(MainBoardLayer::goToVideoPoker)),
                                     NULL));
     }
@@ -216,9 +228,10 @@ void MainBoardLayer::onLotteryClicked(cocos2d::CCObject *pSender)
     if(mLottery != NULL) {
         
         mLottery->runAction(CCSequence::create(
-                                    //CCBlink::create(mDuration, 10),
-                                    CCScaleTo::create(mDuration,1.1),
+                                    CCScaleTo::create(mDuration,1.0),
+                                    CCScaleTo::create(mDuration,0.75),
                                     CCCallFuncN::create(this, callfuncN_selector(MainBoardLayer::goToInvitation)),//Just goto invitation now
+                                    
                                     NULL));
     }
 }
@@ -319,8 +332,11 @@ void MainBoardLayer::showUserInfo(cocos2d::CCNode *pNode, void *data)
         CCLog("User Name: %s",UserInfo::sharedUserInfo()->getUserName().c_str());
         mUserName->setString(UserInfo::sharedUserInfo()->getUserName().c_str());
         
+        CCLog("User Name: %s",CCString::createWithFormat("%d",
+                UserInfo::sharedUserInfo()->getLevel())->getCString());
         mUserLevel->setString(CCString::createWithFormat("%d",
                 UserInfo::sharedUserInfo()->getLevel())->getCString());
+        
         
         mUserGold->setString(CCString::createWithFormat("%d",
                 UserInfo::sharedUserInfo()->getGold())->getCString());
@@ -328,6 +344,8 @@ void MainBoardLayer::showUserInfo(cocos2d::CCNode *pNode, void *data)
         mUserDiamond->setString(CCString::createWithFormat("%d",
                 UserInfo::sharedUserInfo()->getDiamond())->getCString());
         
+        CCLog("User Name: %s",CCString::createWithFormat("%d",
+                UserInfo::sharedUserInfo()->getMedal())->getCString());
         mUserMedal->setString(CCString::createWithFormat("%d",
                 UserInfo::sharedUserInfo()->getMedal())->getCString());
         
@@ -336,27 +354,114 @@ void MainBoardLayer::showUserInfo(cocos2d::CCNode *pNode, void *data)
 }
 
 
-
-//void MainBoardLayer::showUserBoss(cocos2d::CCNode *pNode, void *data)
-//{
-//    BossBoardLayer::sharedBossBoardLayer()->getBossInfo(this, callfuncND_selector(MainBoardLayer::showUserBoss_Done));
-//}
-//
-//void MainBoardLayer::showUserBoss_Done(cocos2d::CCNode *pNode, void *data)
-//{
-//    if(GameInfo::sharedGameInfo()->getBossInfoList()->count() > 0)
-//    {
-//        BossBoardLayer::sharedBossBoardLayer()->addBossBoardToLayer(this);
-//    }
-//    else
-//    {
-//        SceneControler::sharedSceneControler()->gotoScene(GameRoom_Scene);
-//    }
-//    Loading::sharedLoading()->removeLoading();
-//}
-
-
 void MainBoardLayer::onFriendsClicked(cocos2d::CCObject *pSender)
 {
     SceneControler::sharedSceneControler()->gotoScene(Friends_Scene);
+}
+
+
+void MainBoardLayer::onEnter()
+{
+    CCLOG("onEnter");
+
+    showUserInfo(NULL, (void*)true);
+    CCLayer::onEnter();
+}
+
+
+void MainBoardLayer::getRanking_Done(cocos2d::CCObject *data)
+{
+    CCLOG("getRanking_Done");
+    if(data)
+    {
+        CCDictionary *dict = (CCDictionary *)data;
+        
+        CCArray * rankList = (CCArray *)dict->objectForKey("rankUserInfoList");
+    
+        string championMsg = "";
+        if(!rankList || rankList->count() < 1)
+        {
+            CCSprite * sWin = CCSprite::createWithSpriteFrameName("win0");
+            sWin->setAnchorPoint(ccp(0.5,0.5));
+            sWin->setPosition(ccp(mChampionBK->getPositionX() - mChampionBK->getContentSize().width * 0.3/2,
+                                    mChampionBK->getPositionY() + mChampionBK->getContentSize().height/2));
+            sWin->setRotation(-45);
+            this->addChild(sWin);
+        }
+        else
+        {
+            RankInfo * rankInfo = RankInfo::create();
+            rankInfo->parseRankInfo((CCDictionary *)rankList->objectAtIndex(0));
+            
+            sUserInfo = SimpleUserInfo::create();
+            sUserInfo->retain();
+            sUserInfo->parseSimpleUserInfo((CCDictionary *)((CCArray *)dict->objectForKey("simpleUser"))->objectAtIndex(0));
+            
+            sUserInfo->retrieveAvartaImage(this, callfuncND_selector(MainBoardLayer::addChampion));
+            
+        }
+    }
+}
+
+void MainBoardLayer::addChampion(cocos2d::CCNode *pNode, void *data)
+{
+    CCLOG("addChampion");
+    if((bool)data)
+    {
+        float bkScaleX = 0.35;
+        mChampionBK->setScaleX(bkScaleX);
+    
+        float fScale = 0;
+        CCSprite * frameSprite = CCSprite::createWithSpriteFrameName("friend_item_frame1");
+        frameSprite->setAnchorPoint(ccp(0,0.5));
+        
+        fScale = mChampionBK->getContentSize().height * 0.9/ frameSprite->getContentSize().height;
+        frameSprite->setScale(fScale);
+        frameSprite->setPosition(ccp(mChampionBK->getPositionX() - mChampionBK->getContentSize().width * bkScaleX/2 + 2, mChampionBK->getPositionY()));
+    
+        
+        CCSprite * playerImage = NULL;
+        playerImage = sUserInfo->getAvartaIamge();
+    
+    
+        if(playerImage)
+        {
+            playerImage->setAnchorPoint(ccp(0,0.5));
+            playerImage->setScale(mChampionBK->getContentSize().height * 0.9/playerImage->getContentSize().height);
+            playerImage->setPosition(frameSprite->getPosition());
+            
+            this->addChild(playerImage);
+        }
+    
+        this->addChild(frameSprite);
+    
+        CCLabelTTF *cellLabel = CCLabelTTF::create(sUserInfo->getUserName().c_str(), "Arial", 12,CCSize(mChampionBK->getContentSize().width * bkScaleX - frameSprite->getContentSize().width * fScale - 2, mChampionBK->getContentSize().height - 5), kCCTextAlignmentLeft, kCCVerticalTextAlignmentCenter);
+        
+        cellLabel->setAnchorPoint(ccp(0,0.5));
+        cellLabel->setPosition(ccp(frameSprite->getPositionX() + frameSprite->getContentSize().width * fScale + 2, frameSprite->getPositionY()));
+        
+        this->addChild(cellLabel);
+        
+        CCSprite * sWin = CCSprite::createWithSpriteFrameName("win0");
+        sWin->setAnchorPoint(ccp(0.5,0.5));
+        sWin->setPosition(ccp(mChampionBK->getPositionX() - mChampionBK->getContentSize().width * bkScaleX/2,
+                                mChampionBK->getPositionY() + mChampionBK->getContentSize().height/2));
+        sWin->setRotation(-45);
+        this->addChild(sWin);
+        
+        
+        CCSprite * s = CCSprite::createWithSpriteFrameName("rank_item2");
+    
+        CCMenuItemSprite* itemS = CCMenuItemSprite::create(s, s, s, this, menu_selector(MainBoardLayer::onLeaderBoarderClicked));
+        
+        itemS->setScaleX(bkScaleX);
+        itemS->setOpacity(0);
+
+        CCMenu * m_pMenu = CCMenu::create(itemS, NULL);
+        m_pMenu->setAnchorPoint(mChampionBK->getAnchorPoint());
+        m_pMenu->setPosition(mChampionBK->getPosition());
+        m_pMenu->retain();
+        this->addChild(m_pMenu);
+        
+    }
 }

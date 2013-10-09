@@ -75,6 +75,7 @@ bool SimpleUserInfo::init()
     mGender = "m";
     hasAvarteDone = false;
     mAvartaImage = NULL;
+    mSNS = "";
     mTodayRecord = CCArray::create();
     mTodayRecord->retain();
     
@@ -90,7 +91,7 @@ void SimpleUserInfo::retrieveAvartaImage(cocos2d::CCObject *target, SEL_CallFunc
     mTarget = target;
     mCallFuncND = callback;
     
-    CCLOG("retrieveAvartaImage UserId: %d",mUserID);
+    CCLOG("SU retrieveAvartaImage UserId: %d",mUserID);
     
     if(hasAvarteDone)
     {
@@ -116,7 +117,7 @@ void SimpleUserInfo::retrieveAvartaImage(cocos2d::CCObject *target, SEL_CallFunc
                 (mTarget->*mCallFuncND)(NULL, (void *)true);
                 }
             
-            CCLOG("UserId: %d  Done",mUserID);
+            CCLOG("SU UserId: %d  Done",mUserID);
             return;
         
         }
@@ -132,7 +133,7 @@ void SimpleUserInfo::retrieveAvartaImage(cocos2d::CCObject *target, SEL_CallFunc
             
             if(img->initWithImageFileThreadSafe(imgPathName))
             {
-                CCLog("Load from cache, image size = %d, %d", img->getWidth(), img->getHeight());
+                CCLog("SU Load from cache, image size = %d, %d", img->getWidth(), img->getHeight());
 
                 CCTexture2D* texture2D = new CCTexture2D();
                 texture2D->initWithImage(img);
@@ -147,13 +148,14 @@ void SimpleUserInfo::retrieveAvartaImage(cocos2d::CCObject *target, SEL_CallFunc
             }
             else
             {
+                CCLog("SU Load from network 1");
                 HttpImageLoader *imageLoader1 = HttpImageLoader::create();
                 imageLoader1->retrieveImageData(mThumbnail.c_str(), userImageFileName->getCString(),this, callfuncND_selector(SimpleUserInfo::retrieveAvartaImage_Done));
             }
         }
         else
         {
-            CCLog("Load from network");
+            CCLog("SU Load from network 2");
             SaveStringToXML(userImageKey->getCString(), mThumbnail);
             
             HttpImageLoader *imageLoader1 = HttpImageLoader::create();
@@ -164,8 +166,8 @@ void SimpleUserInfo::retrieveAvartaImage(cocos2d::CCObject *target, SEL_CallFunc
 
 void SimpleUserInfo::retrieveAvartaImage_Done(cocos2d::CCNode *node, void *data)
 {
-    CCLog("retrieveAvartaImage_Done");
-    CCLOG("UserId: %d  Done",mUserID);
+    CCLog("SU retrieveAvartaImage_Done");
+    CCLOG("SU UserId: %d  Done", mUserID);
     CCTexture2D* tex2d = (CCTexture2D*)data;
     
     mAvartaImage = CCSprite::createWithTexture(tex2d);

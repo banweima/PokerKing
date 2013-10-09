@@ -23,7 +23,7 @@
 		052386A6179844C500EB739B /* NumbersLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 052386A4179844C500EB739B /* NumbersLayer.cpp */; };
 		053AF0A4174BC82300BFD171 /* IAPProductInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 053AF0A2174BC82300BFD171 /* IAPProductInfo.cpp */; };
 		0546E81E17505B9700603DA3 /* GameItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0546E81C17505B9700603DA3 /* GameItem.cpp */; };
-		0547C6D2178305D000B071A1 /* UserInfoLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0547C6D0178305D000B071A1 /* UserInfoLayer.cpp */; };
+		0547C6D2178305D000B071A1 /* UserInfoLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0547C6D0178305D000B071A1 /* UserInfoLayer.mm */; };
 		054876BD177C30A200EB0076 /* SimpleUserInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 054876BB177C30A200EB0076 /* SimpleUserInfo.mm */; };
 		054D469E177936FD006C1CE2 /* FriendsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054D469C177936FD006C1CE2 /* FriendsScene.cpp */; };
 		054D46A11779379F006C1CE2 /* FriendsLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 054D469F1779379F006C1CE2 /* FriendsLayer.mm */; };
@@ -316,6 +316,7 @@
 		05F0A02517915B6D005A149D /* InvitationScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05F0A02317915B6D005A149D /* InvitationScene.cpp */; };
 		05F0A02817915B7B005A149D /* InvitationLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 05F0A02617915B7B005A149D /* InvitationLayer.mm */; };
 		05F56989175C945700909C0E /* RaidBossInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05F56987175C945700909C0E /* RaidBossInfo.cpp */; };
+		05FD9E8E17FA94BD004C1EBE /* Banner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 05FD9E8C17FA94BD004C1EBE /* Banner.mm */; };
 		9E87FB0A15FF2A2C00631A02 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E87FB0915FF2A2C00631A02 /* QuartzCore.framework */; };
 		9E87FB0C15FF2A2C00631A02 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E87FB0B15FF2A2C00631A02 /* OpenGLES.framework */; };
 		9E87FB0E15FF2A2C00631A02 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E87FB0D15FF2A2C00631A02 /* OpenAL.framework */; };
@@ -353,7 +354,7 @@
 		053AF0A3174BC82300BFD171 /* IAPProductInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAPProductInfo.h; sourceTree = "<group>"; };
 		0546E81C17505B9700603DA3 /* GameItem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameItem.cpp; sourceTree = "<group>"; };
 		0546E81D17505B9700603DA3 /* GameItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameItem.h; sourceTree = "<group>"; };
-		0547C6D0178305D000B071A1 /* UserInfoLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UserInfoLayer.cpp; sourceTree = "<group>"; };
+		0547C6D0178305D000B071A1 /* UserInfoLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UserInfoLayer.mm; sourceTree = "<group>"; };
 		0547C6D1178305D000B071A1 /* UserInfoLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoLayer.h; sourceTree = "<group>"; };
 		054876BB177C30A200EB0076 /* SimpleUserInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SimpleUserInfo.mm; sourceTree = "<group>"; };
 		054876BC177C30A200EB0076 /* SimpleUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleUserInfo.h; sourceTree = "<group>"; };
@@ -977,6 +978,8 @@
 		05F0A02717915B7B005A149D /* InvitationLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvitationLayer.h; sourceTree = "<group>"; };
 		05F56987175C945700909C0E /* RaidBossInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RaidBossInfo.cpp; sourceTree = "<group>"; };
 		05F56988175C945700909C0E /* RaidBossInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaidBossInfo.h; sourceTree = "<group>"; };
+		05FD9E8C17FA94BD004C1EBE /* Banner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Banner.mm; sourceTree = "<group>"; };
+		05FD9E8D17FA94BD004C1EBE /* Banner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Banner.h; sourceTree = "<group>"; };
 		9E87FB0515FF2A2C00631A02 /* PokerKing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokerKing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E87FB0915FF2A2C00631A02 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9E87FB0B15FF2A2C00631A02 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -1029,7 +1032,7 @@
 				054D469D177936FD006C1CE2 /* FriendsScene.h */,
 				054D469F1779379F006C1CE2 /* FriendsLayer.mm */,
 				054D46A01779379F006C1CE2 /* FriendsLayer.h */,
-				0547C6D0178305D000B071A1 /* UserInfoLayer.cpp */,
+				0547C6D0178305D000B071A1 /* UserInfoLayer.mm */,
 				0547C6D1178305D000B071A1 /* UserInfoLayer.h */,
 			);
 			path = friends;
@@ -2593,6 +2596,8 @@
 				05D2F0BE174FB26E008BA092 /* RotateY.h */,
 				050CB2F11757A81500384354 /* BroadCast.cpp */,
 				050CB2F21757A81500384354 /* BroadCast.h */,
+				05FD9E8C17FA94BD004C1EBE /* Banner.mm */,
+				05FD9E8D17FA94BD004C1EBE /* Banner.h */,
 			);
 			path = gameobject;
 			sourceTree = "<group>";
@@ -3015,6 +3020,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0440;
+				TargetAttributes = {
+					9E87FB0415FF2A2C00631A02 = {
+						DevelopmentTeam = 8D9MSHMS64;
+					};
+				};
 			};
 			buildConfigurationList = 9E87FAFF15FF2A2C00631A02 /* Build configuration list for PBXProject "PokerKing" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -3155,6 +3165,7 @@
 				05C2C1F2172B9C420096FC1A /* CCEGLView.mm in Sources */,
 				05C2C1F3172B9C420096FC1A /* CCES2Renderer.m in Sources */,
 				05C2C1F4172B9C420096FC1A /* CCFileUtils.mm in Sources */,
+				05FD9E8E17FA94BD004C1EBE /* Banner.mm in Sources */,
 				05C2C1F5172B9C420096FC1A /* CCImage.mm in Sources */,
 				05C2C1F6172B9C420096FC1A /* CCLock.cpp in Sources */,
 				05C2C1F7172B9C420096FC1A /* CCThread.mm in Sources */,
@@ -3336,7 +3347,7 @@
 				054D46A11779379F006C1CE2 /* FriendsLayer.mm in Sources */,
 				054D46A417793D27006C1CE2 /* SceneControler.cpp in Sources */,
 				054876BD177C30A200EB0076 /* SimpleUserInfo.mm in Sources */,
-				0547C6D2178305D000B071A1 /* UserInfoLayer.cpp in Sources */,
+				0547C6D2178305D000B071A1 /* UserInfoLayer.mm in Sources */,
 				05E3D2A81786CDD4003FFFCB /* TaskScene.cpp in Sources */,
 				05E3D2AB1786CDE1003FFFCB /* TaskLayer.cpp in Sources */,
 				05E3D2AE1789CC98003FFFCB /* CursorTextField.cpp in Sources */,
@@ -3464,8 +3475,8 @@
 					"-lz",
 				);
 				PRODUCT_NAME = PokerKing;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "927661BE-4AB6-4719-B87A-565C8078EAFA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "927661BE-4AB6-4719-B87A-565C8078EAFA";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -3517,8 +3528,8 @@
 					"-lz",
 				);
 				PRODUCT_NAME = PokerKing;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "927661BE-4AB6-4719-B87A-565C8078EAFA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "927661BE-4AB6-4719-B87A-565C8078EAFA";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

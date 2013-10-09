@@ -34,7 +34,7 @@ private:
 
     CCArray * pTodayRanking;
     CCArray * pAllRanking;
-    
+        
     CCArray * pTodayUsers;
     CCArray * pAllUsers;
     
