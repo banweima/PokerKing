@@ -383,6 +383,15 @@ void RankingLayer::getRanking_Done(CCObject * data)
             {
                 mSimpleUserInfo->setSNS(((CCString *)snsList->objectAtIndex(i))->getCString());
             }
+            
+
+            if (isTodayRank) {
+                pTodayUsers->addObject(mSimpleUserInfo);
+            }
+            else{
+                pAllUsers->addObject(mSimpleUserInfo);
+            }
+        
             mSimpleUserInfo->retrieveAvartaImage(this, callfuncND_selector(RankingLayer::addSimpleUser));
         }
         //addListView();
@@ -404,19 +413,7 @@ void RankingLayer::onTodayClicked(cocos2d::CCObject *pSender)
 
 
 void RankingLayer::addSimpleUser(cocos2d::CCNode *pNode, void *data)
-{
-    
-    if((bool)data)
-    {
-        if (isTodayRank) {
-            pTodayUsers->addObject(mSimpleUserInfo);
-        }
-        else{
-            pAllUsers->addObject(mSimpleUserInfo);
-        }
-        
-    }
-    
+{    
     CCLOG("etListCount: %d", etListCount);
     
     etListCount --;

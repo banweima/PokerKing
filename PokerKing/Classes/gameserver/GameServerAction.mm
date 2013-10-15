@@ -286,6 +286,7 @@ void GameServerAction::doLogin_Done(cocos2d::CCObject *data)
     
         gameInfo->setToken(((CCString *)dict->objectForKey("token"))->getCString());
         gameInfo->setGameServerUrl(((CCString *)dict->objectForKey("gameServerUrl"))->m_sString);
+        
         if(dict->objectForKey("gameDownloadUrl"))
         {
             gameInfo->setGameDownloadUrl(((CCString *)dict->objectForKey("gameDownloadUrl"))->m_sString);

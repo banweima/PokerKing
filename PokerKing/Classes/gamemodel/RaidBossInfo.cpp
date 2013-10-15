@@ -63,30 +63,47 @@ bool RaidBossInfo::init()
     return true;
 }
 
-std::string RaidBossInfo::getBossName()
-{
-    switch (mBossType) {
-      case 1:
-        return "赌神润发";
-      case 2:
-        return "赌神德华";
-      case 3:
-        return "赌神星驰";
-      default:
-        return "赌神某某";
-    }
-}
-
-std::string RaidBossInfo::getBossImage()
-{
-    switch (mBossType) {
+//std::string RaidBossInfo::getBossName()
+//{
+//    switch (mBossType) {
 //      case 1:
 //        return "赌神润发";
 //      case 2:
 //        return "赌神德华";
 //      case 3:
 //        return "赌神星驰";
-      default:
-        return "Dealer";
+//      default:
+//        return "赌神某某";
+//    }
+//}
+//
+//std::string RaidBossInfo::getBossImage()
+//{
+//    switch (mBossType) {
+////      case 1:
+////        return "赌神润发";
+////      case 2:
+////        return "赌神德华";
+////      case 3:
+////        return "赌神星驰";
+//      default:
+//        return "Dealer";
+//    }
+//}
+
+int RaidBossInfo::getBossReward()
+{
+    int reward = 0;
+    switch (mBossType) {
+      case 1:
+        reward = 2;
+      case 2:
+        reward = 10;
+      case 3:
+        reward = 20;
+      case 4:
+        reward = 50;
     }
+
+    return reward;
 }

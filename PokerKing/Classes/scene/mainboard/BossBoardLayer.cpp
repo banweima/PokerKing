@@ -223,7 +223,7 @@ void BossBoardLayer::getBossInfo_Done(cocos2d::CCObject *pNode, void *data)
             {
                 hasBoss1 = true;
                 bossInfo = (RaidBossInfo *) bossInfoList->objectAtIndex(0);
-                bossString = CCString::createWithFormat("%s (%d/%d)", bossInfo->getBossName().c_str(), bossInfo->getCurrentHP(), bossInfo->getMaxHP())->getCString();
+                bossString = CCString::createWithFormat("%s (%d/%d)", bossInfo->getOnlineBossName().c_str(), bossInfo->getCurrentHP(), bossInfo->getMaxHP())->getCString();
                 mLabel1->setString(bossString.c_str());
                 mLabel1->setVisible(true);
                 mMenuGo1->setVisible(true);
@@ -233,7 +233,7 @@ void BossBoardLayer::getBossInfo_Done(cocos2d::CCObject *pNode, void *data)
             {
                 hasBoss2 = true;
                 bossInfo = (RaidBossInfo *) bossInfoList->objectAtIndex(1);
-                bossString = CCString::createWithFormat("%s (%d/%d)", bossInfo->getBossName().c_str(), bossInfo->getCurrentHP(), bossInfo->getMaxHP())->getCString();
+                bossString = CCString::createWithFormat("%s (%d/%d)", bossInfo->getOnlineBossName().c_str(), bossInfo->getCurrentHP(), bossInfo->getMaxHP())->getCString();
                 mLabel2->setString(bossString.c_str());
                 mLabel2->setVisible(true);
                 mMenuGo2->setVisible(true);
@@ -243,7 +243,7 @@ void BossBoardLayer::getBossInfo_Done(cocos2d::CCObject *pNode, void *data)
             {
                 hasBoss3 = true;
                 bossInfo = (RaidBossInfo *) bossInfoList->objectAtIndex(2);
-                bossString = CCString::createWithFormat("%s (%d/%d)", bossInfo->getBossName().c_str(), bossInfo->getCurrentHP(), bossInfo->getMaxHP())->getCString();
+                bossString = CCString::createWithFormat("%s (%d/%d)", bossInfo->getOnlineBossName().c_str(), bossInfo->getCurrentHP(), bossInfo->getMaxHP())->getCString();
                 mLabel3->setString(bossString.c_str());
                 mLabel3->setVisible(true);
                 mMenuGo3->setVisible(true);
@@ -253,7 +253,7 @@ void BossBoardLayer::getBossInfo_Done(cocos2d::CCObject *pNode, void *data)
             {
                 hasBoss4 = true;
                 bossInfo = (RaidBossInfo *) bossInfoList->objectAtIndex(3);
-                bossString = CCString::createWithFormat("%s (%d/%d)", bossInfo->getBossName().c_str(), bossInfo->getCurrentHP(), bossInfo->getMaxHP())->getCString();
+                bossString = CCString::createWithFormat("%s (%d/%d)", bossInfo->getOnlineBossName().c_str(), bossInfo->getCurrentHP(), bossInfo->getMaxHP())->getCString();
                 mLabel4->setString(bossString.c_str());
                 mLabel4->setVisible(true);
                 mMenuGo4->setVisible(true);
@@ -263,7 +263,7 @@ void BossBoardLayer::getBossInfo_Done(cocos2d::CCObject *pNode, void *data)
             {
                 hasBoss5 = true;
                 bossInfo = (RaidBossInfo *) bossInfoList->objectAtIndex(4);
-                bossString = CCString::createWithFormat("%s (%d/%d)", bossInfo->getBossName().c_str(), bossInfo->getCurrentHP(), bossInfo->getMaxHP())->getCString();
+                bossString = CCString::createWithFormat("%s (%d/%d)", bossInfo->getOnlineBossName().c_str(), bossInfo->getCurrentHP(), bossInfo->getMaxHP())->getCString();
                 mLabel5->setString(bossString.c_str());
                 mLabel5->setVisible(true);
                 mMenuGo5->setVisible(true);

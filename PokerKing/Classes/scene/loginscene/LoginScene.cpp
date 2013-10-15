@@ -50,6 +50,7 @@ void LoginScene::setupScene()
 {
     CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("res/21Images_UntitledSheet.plist");
     CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("res/PokerKing_UntitledSheet.plist");
+    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("res/PokerKing_PK_2.plist");
     CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("plist/porkerlist.plist");
     
     LoginLayer *loginLayer = LoginLayer::create();

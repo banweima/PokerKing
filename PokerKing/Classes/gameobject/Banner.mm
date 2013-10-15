@@ -64,6 +64,7 @@ void Banner::showBannerImage(cocos2d::CCObject *data)
         mBgSprite->setPosition(ccp(0, h));
         mBgSprite->setAnchorPoint(ccp(0,1));
         mBgSprite->setScaleX(w/mBgSprite->getContentSize().width);
+        mBgSprite->setScaleY((h-480)/mBgSprite->getContentSize().height);
         this->addChild(mBgSprite,-200);
         
         s = CCSprite::createWithSpriteFrameName("main_top_board");

@@ -57,6 +57,8 @@ private:
     
     bool mIsFlipped;
     bool mIsSelected;
+    
+    int winH;
 public:
     PlayCard();
     ~PlayCard();

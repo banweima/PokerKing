@@ -84,11 +84,7 @@ private:
     
     WordBoard * mDealerWords;
     
-    WordBoard * mYesNoWords;
-    
     CCSprite * mBackground;
-    
-    CCMenu * mYesNoMenu;
     
     CCLabelTTF * dealerName;
     
@@ -171,10 +167,9 @@ public:
     
     void showMagicTool();
     
-    void requestMagicItem();
+    void requestMagicItem(CCNode *pSender, void *data);
     
-    void onYesClicked(CCObject * pSender);
-    void onNoClicked(CCObject * pSender);
+    void useMagicTool(CCObject * pSender);
     
 public:
     void onHitCardsClicked();
@@ -215,8 +210,6 @@ private:
     float calcMatchResult(ResultType type);
     
     void uploadMatchResult_Done(CCNode* pSender, void* data);
-    
-    void updateCurrentGold();
     
     void globalChatClicked();
     

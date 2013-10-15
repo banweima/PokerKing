@@ -27,7 +27,7 @@ class BigSmallLayer : public CCLayer
 {
 private:
         
-    CCLabelTTF * mBet;
+    CCLabelBMFont * mBet;
     bool m_bTouchedMenu;
     CCMenu* mMenu;
     CCMenuItemImage * mBig;
@@ -35,7 +35,11 @@ private:
     PlayCardHand* mPlayerHand;
     long currentBet;
     
-    int selectTarget; //1:big;0:7;-1:small
+    int selectTarget; //1:Black;-1:Red
+    
+    bool isFirstTime;
+    
+    CCLabelTTF * mHistory;
     
 public:
     CCB_STATIC_NEW_AUTORELEASE_OBJECT_WITH_INIT_METHOD(BigSmallLayer, create);
@@ -65,7 +69,6 @@ private:
     
     void onBigClicked(CCObject *pSender);
     void onSmallClicked(CCObject * pSender);
-    void onSevenClicked(CCObject * pSender);
     void onExitClicked(CCObject * pSender);
     
     void showCard();

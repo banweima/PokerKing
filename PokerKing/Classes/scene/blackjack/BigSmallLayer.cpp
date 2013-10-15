@@ -37,6 +37,8 @@ BigSmallLayer::BigSmallLayer()
 ,mBig(NULL)
 ,mTarget(NULL)
 ,mCallFunc(NULL)
+,isFirstTime(true)
+,mHistory(NULL)
 {}
 
 BigSmallLayer::~BigSmallLayer()
@@ -45,6 +47,7 @@ BigSmallLayer::~BigSmallLayer()
     CC_SAFE_RELEASE(mMenu);
     CC_SAFE_RELEASE(mPlayerHandNode);
     CC_SAFE_RELEASE(mBig);
+    CC_SAFE_RELEASE(mHistory);
 }
 
 bool BigSmallLayer::init()
@@ -68,6 +71,12 @@ void BigSmallLayer::setupLayer()
 
     this->addChild(node);
     
+    int wh = getWinH();
+    if(wh>=480)
+    {
+        mBet->setScale(2);
+    }
+    
     this->setTouchEnabled(true);
     
     mPlayerHand = PlayCardHand::create(false);
@@ -80,6 +89,12 @@ void BigSmallLayer::setupLayer()
     
     mPlayerHandNode->addChild(mPlayerHand);
     
+    if(isFirstTime)
+    {
+        mPlayerHand->addNextCardToHand(true, 0.5);
+    }
+    
+    isFirstTime = false;
 }
 
 void BigSmallLayer::onNodeLoaded(cocos2d::CCNode * pNode,  cocos2d::extension::CCNodeLoader * pNodeLoader) {
@@ -90,7 +105,6 @@ SEL_MenuHandler BigSmallLayer::onResolveCCBCCMenuItemSelector(CCObject * pTarget
     
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onBigClicked", BigSmallLayer::onBigClicked);
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onSmallClicked", BigSmallLayer::onSmallClicked);
-    CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onSevenClicked", BigSmallLayer::onSevenClicked);
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onExitClicked", BigSmallLayer::onExitClicked);
     
     return NULL;
@@ -103,10 +117,12 @@ SEL_CCControlHandler BigSmallLayer::onResolveCCBCCControlSelector(CCObject * pTa
 
 bool BigSmallLayer::onAssignCCBMemberVariable(CCObject * pTarget, CCString * pMemberVariableName, CCNode * pNode) {
 
-    CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mBet", CCLabelTTF * , mBet);
+    CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mBet", CCLabelBMFont * , mBet);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mMenu", CCMenu * , mMenu);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mPlayerHandNode", CCNode * , mPlayerHandNode);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mBig", CCMenuItemImage *, mBig);
+    CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mHistory", CCLabelTTF *, mHistory);
+    
     return false;
 }
 
@@ -206,22 +222,24 @@ void BigSmallLayer::onSmallClicked(cocos2d::CCObject *pSender)
     showCard();
 }
 
-void BigSmallLayer::onSevenClicked(cocos2d::CCObject *pSender)
-{
-    selectTarget = 0;
-    showCard();
-}
-
 void BigSmallLayer::showCard()
 {
     if(currentBet > 0)
     {
-        if (mPlayerHand->getCardCount() > 0)
+        if(isFirstTime)
         {
-          mPlayerHand->clearHand();
+            mPlayerHand->flipCards();
+        }
+        else
+        {
+            if (mPlayerHand->getCardCount() > 0)
+            {
+              mPlayerHand->clearHand();
+            }
+            
+            mPlayerHand->addNextCardToHand(false, 0.5);
         }
         
-        mPlayerHand->addNextCardToHand(false, 0.5);
         mPlayerHand->runAction(CCSequence::create(
                             CCDelayTime::create(1),
                             CCCallFunc::create(this, callfunc_selector(BigSmallLayer::showResult)),
@@ -238,16 +256,41 @@ void BigSmallLayer::showResult()
 {
     std::string wavName = "";
     
-    if ((mPlayerHand->getCard(0)->getCardType() < 7 && selectTarget == -1)
-    || (mPlayerHand->getCard(0)->getCardType() > 7 && selectTarget == 1) )
+    //Big or Small
+//    if ((mPlayerHand->getCard(0)->getCardType() < 7 && selectTarget == -1)
+//    || (mPlayerHand->getCard(0)->getCardType() > 7 && selectTarget == 1) )
+//    {
+//        setCurrentBet(currentBet * 2);
+//        wavName = "cheer.mp3";
+//    }
+//    else if(mPlayerHand->getCard(0)->getCardType() == 7 && selectTarget == 0)
+//    {
+//        setCurrentBet(currentBet * 7);
+//        wavName = "BJ.mp3";
+//    }
+//    else
+//    {
+//        setCurrentBet(0);
+//        wavName = "Loser.wav";
+//    }
+    
+    // Black or Red
+    
+    if(((mPlayerHand->getCard(0)->getCardSuit() == Diamonds || mPlayerHand->getCard(0)->getCardSuit() == Hearts) && selectTarget == -1 ))
+    {
+        
+        setCurrentBet(currentBet * 2);
+        wavName = "cheer.mp3";
+        
+        mHistory->setString(CCString::createWithFormat("%s 红", mHistory->getString())->getCString());
+    }
+    else if ( ((mPlayerHand->getCard(0)->getCardSuit() == Clubs || mPlayerHand->getCard(0)->getCardSuit() == Spades) && selectTarget == 1 )
+    )
     {
         setCurrentBet(currentBet * 2);
         wavName = "cheer.mp3";
-    }
-    else if(mPlayerHand->getCard(0)->getCardType() == 7 && selectTarget == 0)
-    {
-        setCurrentBet(currentBet * 7);
-        wavName = "BJ.mp3";
+        
+        mHistory->setString(CCString::createWithFormat("%s 黑", mHistory->getString())->getCString());
     }
     else
     {

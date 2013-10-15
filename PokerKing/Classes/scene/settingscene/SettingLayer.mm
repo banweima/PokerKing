@@ -65,13 +65,13 @@ void SettingLayer::setupLayer()
         this->addChild(banner,-100);
     }
     
-    if(LoadStringFromXML(NeedBJInsurance) == "No")
+    if(LoadStringFromXML(NeedBJInsurance) == "Yes")
     {
-        needInsurance = false;
+        needInsurance = true;
     }
     else
     {
-        needInsurance = true;
+        needInsurance = false;
     }
     
     if(LoadStringFromXML(NeedBJBigSmall) == "No")

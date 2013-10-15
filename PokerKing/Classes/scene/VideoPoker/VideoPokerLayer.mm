@@ -22,7 +22,7 @@
 #include "BattleInfo.h"
 #include "GameServerAction.h"
 #include "Banner.h"
-
+#include "WeiboFactory.h"
 
 VideoPokerLayer::VideoPokerLayer()
 : 
@@ -31,20 +31,18 @@ mPlayerHandNode(NULL)
 , betCount(0)
 , winCount(0)
 , totalBonus(0)
-, mTotalBonus(NULL)
 , mWinChipsSprite(NULL)
 , mRoomLevelInfo(NULL)
 , mIsFirstHit(true)
 , mGold(NULL)
 , mLevel(NULL)
-, mFX(NULL)
 , hadFriendSupport(false)
 , mDeal(NULL)
 {}
 
+
 VideoPokerLayer::~VideoPokerLayer()
 {
-    CC_SAFE_RELEASE(mTotalBonus);
     CC_SAFE_RELEASE(mGold);
     CC_SAFE_RELEASE(mLevel);
 
@@ -52,7 +50,7 @@ VideoPokerLayer::~VideoPokerLayer()
     
     CC_SAFE_RELEASE(mPlayerHandNode);
     CC_SAFE_RELEASE(mPlayerCountNode);
-    CC_SAFE_RELEASE(mFX);
+    
 }
 
 bool VideoPokerLayer::init()
@@ -90,7 +88,7 @@ void VideoPokerLayer::setupLayer()
     mPlayerHand->setCardCanSelect(true);
     
     int w = getContentSize().width;
-    int h = getContentSize().height;
+    int h = 480;
     int handH = h/3;
 
     mPlayerHand->setPosition(ccp(w/2, h/3));
@@ -99,7 +97,7 @@ void VideoPokerLayer::setupLayer()
     
     mPlayerCount = CardCount::create();
     
-    mPlayerCount->setPosition(ccp(w/2, h/2 - handH*0.35));
+    mPlayerCount->setPosition(ccp(w/2, h/2 - handH*0.35 + 10));
     
     mPlayerCountNode->addChild(mPlayerCount);
     
@@ -108,15 +106,14 @@ void VideoPokerLayer::setupLayer()
     CCSize size = CCDirector::sharedDirector()->getWinSize();    
     
     mWinChipsSprite = CCLabelTTF::create("", "Thonburi", 16);
-    mWinChipsSprite->setPosition( ccp(size.width/2, size.height/2 - 30) );
+    mWinChipsSprite->setPosition( ccp(size.width/2, 220) );
     this->addChild(mWinChipsSprite);
     
+    isLevelMenuNormal = false;
     
     showUserInfo();
     
     mPlayerCount->setVisible(false);
-    
-    mFX->stopSystem();
 }
 
 void VideoPokerLayer::onNodeLoaded(cocos2d::CCNode * pNode,  cocos2d::extension::CCNodeLoader * pNodeLoader)
@@ -135,9 +132,6 @@ SEL_MenuHandler VideoPokerLayer::onResolveCCBCCMenuItemSelector(CCObject * pTarg
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onBetClicked", VideoPokerLayer::onBetClicked);
 
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onMaxClicked", VideoPokerLayer::onMaxClicked);
-
-
-
     
     return NULL;
 }
@@ -150,14 +144,14 @@ SEL_CCControlHandler VideoPokerLayer::onResolveCCBCCControlSelector(CCObject * p
 bool VideoPokerLayer::onAssignCCBMemberVariable(CCObject * pTarget, CCString * pMemberVariableName, CCNode * pNode) {
 
 
-    CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mTotalBonus", CCLabelTTF *, mTotalBonus);
+
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mGold", CCLabelTTF *, mGold);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mLevel", CCLabelTTF *, mLevel);
     
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mPlayerHandNode", CCNode *, mPlayerHandNode);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mPlayerCountNode", CCNode *, mPlayerCountNode);
-    CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mFX", CCParticleSystemQuad *, mFX);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mDeal", CCMenuItemImage *, mDeal);
+
     return false;
 }
 
@@ -233,7 +227,6 @@ void VideoPokerLayer::onDealClicked(CCObject * pSender)
 {
     if(mIsFirstHit)
     {
-        mFX->stopSystem();
         if(UserInfo::sharedUserInfo()->getGold() < betCount)
         {
             AlertLayer * shareAlert = AlertLayer::create("翻翻乐", "您金币不足，请先去兑换", true, this, (SEL_CallFuncND)callfuncND_selector(VideoPokerLayer::gotoShop));
@@ -297,16 +290,19 @@ void VideoPokerLayer::setRoomLevelInfo(RoomLevelInfo *RoomLevelInfo)
 
 void VideoPokerLayer::onBetClicked()
 {
+    
     if(!mIsFirstHit)
     {
         return;
     }
     
     betCount += mRoomLevelInfo->getMinHand();
-    if(betCount > mRoomLevelInfo->getMaxHand())
+    
+    if(betCount > mRoomLevelInfo->getMaxHand() && mRoomLevelInfo->getMaxHand() > 0)
     {
         betCount = mRoomLevelInfo->getMinHand();
     }
+    
     mWinChipsSprite->setString(CCString::createWithFormat("Bet: %d", betCount)->getCString());
     
 }
@@ -315,11 +311,21 @@ void VideoPokerLayer::onBetClicked()
 // Start.
 void VideoPokerLayer::onMaxClicked()
 {
+    
     if(!mIsFirstHit)
     {
         return;
     }
-    betCount = mRoomLevelInfo->getMaxHand();
+    
+    if(mRoomLevelInfo->getMaxHand() == 0)
+    {
+        betCount = UserInfo::sharedUserInfo()->getGold() / 10;
+    }
+    else
+    {
+        betCount = mRoomLevelInfo->getMaxHand() >= UserInfo::sharedUserInfo()->getGold() ? UserInfo::sharedUserInfo()->getGold() : mRoomLevelInfo->getMaxHand();
+    }
+    
     mWinChipsSprite->setString(CCString::createWithFormat("Bet: %d", betCount)->getCString());
 }
 
@@ -360,6 +366,9 @@ void VideoPokerLayer::winCalc()
     int Odds = 0;
     long extraBonus = 0;
 
+    std::string reward = "";
+    bool needWeiboShare = false;
+    
     if(1 == isPlayerWin)
     {
         switch (mPlayerPokerHand)
@@ -372,39 +381,57 @@ void VideoPokerLayer::winCalc()
             break;
             case ThreeOfOneKind:
             Odds = 3 -1;
-            mFX->setTotalParticles(150);
+
             break;
             case Straight:
             Odds = 4 -1;
-            mFX->setTotalParticles(150);
+            needWeiboShare = true;
+            reward = "顺子";
             break;
+            
             case Flush:
             Odds = 6 - 1;
-            mFX->setTotalParticles(200);
+            needWeiboShare = true;
+            reward = "同花";
             break;
+            
             case FullHouse:
             Odds = 9 - 1;
-            mFX->setTotalParticles(200);
+            needWeiboShare = true;
+            reward = "葫芦";
             break;
+            
             case FourOfOneKind:
             Odds = 25 - 1;
-            mFX->setTotalParticles(250);
+            needWeiboShare = true;
+            reward = "四条";
             break;
+            
             case StraightFlush:
             Odds = 50 -1;
-            extraBonus = (long)(totalBonus * 0.1);
-            mFX->setTotalParticles(250);
+            //extraBonus = (long)(totalBonus * 0.1);
+            needWeiboShare = true;
+            reward = "同花顺";
             break;
+            
             case RoyalStraightFlush:
             Odds = 250 - 1;
-            extraBonus = totalBonus;
-            mFX->setTotalParticles(300);
+            //extraBonus = totalBonus;
+            needWeiboShare = true;
+            reward = "皇家同花顺";
             break;
         }
         
-        winCount = betCount * Odds + extraBonus;
+        winCount = betCount * Odds;// + extraBonus;
         CCLog("winCount: %d", winCount);
-//        [[GameKitFactory sharedGameKitFactory] submitScore:LeaderBoard_VideoPokerWinner :winCount ];
+        
+        if(needWeiboShare)
+        {
+            //Share weibo
+            NSString * value = [[NSString alloc] initWithFormat:@"祝贺 %s 拿到了 %s ，奖金%d！", UserInfo::sharedUserInfo()->getUserName().c_str() ,reward.c_str(), winCount];
+
+            [[WeiboFactory sharedWeiboFactory] uploadStatus:value];
+        }
     }
     else
     {
@@ -417,7 +444,7 @@ void VideoPokerLayer::winCalc()
         if(mPlayerPokerHand >= ThreeOfOneKind)
         {
             CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("cheer.mp3");
-            mFX->resetSystem();
+
         }
     }
     else
@@ -427,7 +454,7 @@ void VideoPokerLayer::winCalc()
     }
 
     
-    mWinChipsSprite->setString(CCString::createWithFormat("Bet: %d   Win: %d", betCount,winCount)->getCString());
+    mWinChipsSprite->setString(CCString::createWithFormat("Bet: %d   Win: %d", betCount, winCount + betCount)->getCString());
 
     mPlayerCount->setWin(isPlayerWin);
     
@@ -449,6 +476,8 @@ void VideoPokerLayer::startOnlineBattle_done(CCNode* pSender, void* data)
 {
     if((bool)data)
     {
+        UserInfo::sharedUserInfo()->setGold(UserInfo::sharedUserInfo()->getGold() - betCount);
+        showUserInfo();
         startGame();
     }
     else
@@ -465,9 +494,7 @@ void VideoPokerLayer::startOnlineBattle_done(CCNode* pSender, void* data)
 }
 
 void VideoPokerLayer::startGame()
-{    
-    mWinChipsSprite->setString("");
-    
+{
     // Clear the hand before starting a new game:
     mPlayerHand->clearHand();
     
@@ -517,7 +544,8 @@ void VideoPokerLayer::uploadMatchResult(float result)
     
     hadFriendSupport = false;
     
-    GameServerAction::sharedGameServerAction()->endBattle((long)result, 0, mRoomLevelInfo->getRoomLevel(), this, callfuncND_selector(VideoPokerLayer::uploadMatchResult_Done));
+    //result+1 is for keep the win is win of BJ result
+    GameServerAction::sharedGameServerAction()->endBattle((long)(result+1), 0, mRoomLevelInfo->getRoomLevel(), this, callfuncND_selector(VideoPokerLayer::uploadMatchResult_Done));
 }
 
 void VideoPokerLayer::uploadMatchResult_Done(CCNode* pSender, void* data)
@@ -548,23 +576,19 @@ void VideoPokerLayer::showUserInfo()
     
     CCString * userCoinString = NULL;
     
-    if(userCoinAmount < 10000)
+    if(userCoinAmount < 99999)
     {
         userCoinString = CCString::createWithFormat("%d",userCoinAmount);
     }
-    else if(userCoinAmount < 1000000)
+    else if(userCoinAmount < 9999999)
     {
-        userCoinString = CCString::createWithFormat("%d千",userCoinAmount / 1000);
+        userCoinString = CCString::createWithFormat("%d 万",userCoinAmount / 10000);
     }
-    else if(userCoinAmount < 1000000000)
+    else
     {
-        userCoinString = CCString::createWithFormat("%d百万",userCoinAmount / 1000000);
+        userCoinString = CCString::createWithFormat("%d 百万",userCoinAmount / 1000000);
     }
-    else if(userCoinAmount < 1000000000000)
-    {
-        userCoinString = CCString::createWithFormat("%d十亿",userCoinAmount / 1000000000);
-    }
-    
+        
     mGold->setString(userCoinString->getCString());
     
     mLevel->setString(CCString::createWithFormat("%d",UserInfo::sharedUserInfo()->getLevel())->getCString());
@@ -579,7 +603,7 @@ void VideoPokerLayer::friendSupport()
     
     int friendSupportValue = FriendSupportRate + friendsCount;
     
-    friendSupportValue = (friendSupportValue > 20)?20:friendSupportValue;
+    friendSupportValue = (friendSupportValue > 30)?30:friendSupportValue;
     
     if(supportRand < friendSupportValue)
     {

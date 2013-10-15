@@ -60,7 +60,7 @@
 
 #define Act_rank_blackjack "showBlackJackRank.action"
 
-#define Act_rank_all "showTotalTimes.action"
+#define Act_rank_all "showWinMoney.action"
 
 //#define Act_rank_game "showResultGame.action"
 

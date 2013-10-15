@@ -33,20 +33,17 @@ private:
     PlayCardHand* mPlayerHand;
     CardCount* mPlayerCount;
     
-    CCLabelTTF* mTotalBonus;
     CCLabelTTF* mGold;
     CCLabelTTF* mLevel;
+
 
     CCMenuItemImage * mDeal;
     
     CCNode* mPlayerHandNode;
     CCNode* mPlayerCountNode;
-
-    CCParticleSystemQuad * mFX;
     
     RoomLevelInfo * mRoomLevelInfo;
     CCLabelTTF * mWinChipsSprite;
-    
     
     
     int mConsecutiveWinCount;
@@ -64,6 +61,8 @@ private:
     bool mIsFirstHit;
     
     bool hadFriendSupport;
+    
+    bool isLevelMenuNormal;
     
 public:
 
@@ -91,7 +90,6 @@ public:
     void onSettingClicked(CCObject * pSender);
     
     void onDealClicked(CCObject * pSender);
-    
 public:
     void onBetClicked();
     void onMaxClicked();

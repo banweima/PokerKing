@@ -13,10 +13,10 @@
 #include "UserInfoLayer.h"
 #include "CursorTextField.h"
 #include "SceneControler.h"
+#include "Banner.h"
 
 FriendsLayer::FriendsLayer()
-: mFriendsBanner(NULL)
-, pPlayerList(NULL)
+: pPlayerList(NULL)
 , pFriendsList(NULL)
 , pRequestList(NULL)
 , mFriends(NULL)
@@ -31,7 +31,6 @@ FriendsLayer::FriendsLayer()
 
 FriendsLayer::~FriendsLayer()
 {
-    CC_SAFE_RELEASE(mFriendsBanner);
     CC_SAFE_RELEASE(pPlayerList);
     CC_SAFE_RELEASE(pRequestList);
     CC_SAFE_RELEASE(pFriendsList);
@@ -64,6 +63,14 @@ void FriendsLayer::setupLayer()
 {
     CCNode * node = CCBUtility::loadCCB("ccbi/friends.ccbi", "FriendsLayer", CCLayerLoader::loader(), this);
     this->addChild(node);
+    
+    int h = getWinH();
+    if(h>480)
+    {
+        Banner * banner = Banner::create();
+        banner->retain();
+        this->addChild(banner,-100);
+    }
     
     mWarning->setVisible(false);
     
@@ -136,10 +143,12 @@ void FriendsLayer::addListView()
                 m_pRequestListView->setSeparatorStyle(CCListViewCellSeparatorStyleNone);
                 this->addChild(m_pRequestListView);
             }
-            m_pFriendsListView->setVisible(true);
+            m_pRequestListView->setVisible(true);
             break;
         }
     }
+    
+    Loading::sharedLoading()->removeLoading();
 }
 
 void FriendsLayer::setListInvisible()
@@ -186,8 +195,6 @@ SEL_MenuHandler FriendsLayer::onResolveCCBCCMenuItemSelector(CCObject * pTarget,
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onPlayersClicked", FriendsLayer::onPlayersClicked);
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onRequestClicked", FriendsLayer::onRequestClicked);
     
-    CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onInvitationClicked", FriendsLayer::onInvitationClicked);
-    
     return NULL;
 }
 
@@ -198,7 +205,6 @@ SEL_CCControlHandler FriendsLayer::onResolveCCBCCControlSelector(CCObject * pTar
 }
 
 bool FriendsLayer::onAssignCCBMemberVariable(CCObject * pTarget, CCString * pMemberVariableName, CCNode * pNode) {
-    CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mFriendsBanner", CCSprite *, mFriendsBanner);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mFriends", CCMenuItemImage *, mFriends);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mPlayers", CCMenuItemImage *, mPlayers);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mRequest", CCMenuItemImage *, mRequest);
@@ -268,13 +274,15 @@ void FriendsLayer::CCListView_cellForRow(cocos2d::extension::CCListView *listVie
         cellLvValue = CCString::createWithFormat("Lv %d", ((SimpleUserInfo *)pRequestList->objectAtIndex(data->nRow))->getLevel())->getCString();
         break;
     }
-
     
     CCSprite *bgSprite = CCSprite::createWithSpriteFrameName("rank_item1");
+
+    float bgXScale = cellSize.width * 0.9/bgSprite->getContentSize().width;
+    float bgYScale = cellSize.height * 0.85 /bgSprite->getContentSize().height;
     
     bgSprite->setPosition(ccp(cellSize.width/2, cellSize.height/2));
-    bgSprite->setScaleX(cellSize.width * 0.9/bgSprite->getContentSize().width);
-    bgSprite->setScaleY(cellSize.height * 0.85 /bgSprite->getContentSize().height);
+    bgSprite->setScaleX(bgXScale);
+    bgSprite->setScaleY(bgYScale);
     cell->addChild(bgSprite);
 
     float fScale = 0;
@@ -323,11 +331,12 @@ void FriendsLayer::CCListView_cellForRow(cocos2d::extension::CCListView *listVie
     
     
     
-    CCSprite *okBtn1 = CCSprite::createWithSpriteFrameName("button_22");
-    CCSprite *cancelBtn1 = CCSprite::createWithSpriteFrameName("button_cancel");
+//    CCSprite *okBtn1 = CCSprite::createWithSpriteFrameName("button_22");
+//    CCSprite *cancelBtn1 = CCSprite::createWithSpriteFrameName("button_cancel");
+    CCSprite *hands = CCSprite::createWithSpriteFrameName("hands");
     
     SEL_MenuHandler menuHandler = NULL;
-    SEL_MenuHandler menuHandler2 = NULL;
+//    SEL_MenuHandler menuHandler2 = NULL;
     
     switch (friendsTab) {
       case NormalPlyers:
@@ -337,41 +346,55 @@ void FriendsLayer::CCListView_cellForRow(cocos2d::extension::CCListView *listVie
         menuHandler = menu_selector(FriendsLayer::onRemoveClicked);
         break;
         case FriendsRequest:
-        menuHandler = menu_selector(FriendsLayer::onAcceptClicked);
-        menuHandler2 = menu_selector(FriendsLayer::onRejectClicked);
+        menuHandler = menu_selector(FriendsLayer::onFriendsRequestItemClicked);
+//        menuHandler2 = menu_selector(FriendsLayer::onRejectClicked);
         break;
     }
 
-    CCMenuItemSprite* okMenuItem = NULL;
-    CCMenuItemSprite* cancelMenuItem = NULL;
+//    CCMenuItemSprite* okMenuItem = NULL;
+//    CCMenuItemSprite* cancelMenuItem = NULL;
+    CCMenuItemSprite* handsMenuItem = NULL;
     CCMenu *  m_pMenu = NULL;
     
-    if(friendsTab == FriendsRequest)
-    {
-        okMenuItem= CCMenuItemSprite::create(okBtn1, okBtn1, okBtn1, this, menuHandler);
-
-        okMenuItem->setAnchorPoint(ccp(0,0.5));
-        okMenuItem->setPosition(ccp( bgSprite->getContentSize().width - okMenuItem->getContentSize().width,cellSize.height/2));
+//    if(friendsTab == FriendsRequest)
+//    {
+//        okMenuItem= CCMenuItemSprite::create(okBtn1, okBtn1, okBtn1, this, menuHandler);
+//
+//        okMenuItem->setAnchorPoint(ccp(0,0.5));
+//        okMenuItem->setPosition(ccp( bgSprite->getContentSize().width - okMenuItem->getContentSize().width,cellSize.height/2));
+//        
+//        cancelMenuItem= CCMenuItemSprite::create(cancelBtn1, cancelBtn1, cancelBtn1, this, menuHandler2);
+//
+//        cancelMenuItem->setAnchorPoint(ccp(0,0.5));
+//        cancelMenuItem->setPosition(ccp( okMenuItem->getPositionX() + okMenuItem->getContentSize().width,cellSize.height/2));
+//        
+//        m_pMenu = CCMenu::create(okMenuItem, cancelMenuItem,NULL);
+//    }
+//    else if(friendsTab == NormalPlyers)
+//    {
+        float iScale = bgSprite->getContentSize().height * 0.7 / hands->getContentSize().height;
         
-        cancelMenuItem= CCMenuItemSprite::create(cancelBtn1, cancelBtn1, cancelBtn1, this, menuHandler2);
+        handsMenuItem= CCMenuItemSprite::create(hands, hands, hands, this, menuHandler);
 
-        cancelMenuItem->setAnchorPoint(ccp(0,0.5));
-        cancelMenuItem->setPosition(ccp( okMenuItem->getPositionX() + okMenuItem->getContentSize().width,cellSize.height/2));
+        handsMenuItem->setAnchorPoint(ccp(0,0.5));
+        handsMenuItem->setPosition(ccp( bgSprite->getContentSize().width * bgXScale - handsMenuItem->getContentSize().width * iScale,cellSize.height/2));
+        handsMenuItem->setScale(iScale);
         
-        m_pMenu = CCMenu::create(okMenuItem, cancelMenuItem,NULL);
-    }
-    else
-    {
-        okMenuItem= CCMenuItemSprite::create(okBtn1, okBtn1, okBtn1, this, menuHandler);
-
-        okMenuItem->setAnchorPoint(ccp(0,0.5));
-        okMenuItem->setPosition(ccp( bgSprite->getContentSize().width - okMenuItem->getContentSize().width,cellSize.height/2));
-        
-        m_pMenu = CCMenu::create(okMenuItem, NULL);
-    }
+        m_pMenu = CCMenu::create(handsMenuItem, NULL);
+//    }
+//    else
+//    {
+//        okMenuItem= CCMenuItemSprite::create(okBtn1, okBtn1, okBtn1, this, menuHandler);
+//
+//        okMenuItem->setAnchorPoint(ccp(0,0.5));
+//        okMenuItem->setPosition(ccp( bgSprite->getContentSize().width - okMenuItem->getContentSize().width,cellSize.height/2));
+//        
+//        m_pMenu = CCMenu::create(okMenuItem, NULL);
+//    }
     
     m_pMenu->setAnchorPoint(ccp(0,0));
     m_pMenu->setPosition(ccp(0,0));
+    
     cell->addChild(m_pMenu, 0 ,data->nRow);
 }
 
@@ -458,7 +481,7 @@ void FriendsLayer::getNormalPlayer_Done(cocos2d::CCObject *data)
         {
             Loading::sharedLoading()->removeLoading();
             mWarning->setVisible(true);
-            mWarning->setString("暂时没有排行信息！");
+            mWarning->setString("暂时没有在线玩家！");
             return;
         }
         
@@ -471,10 +494,15 @@ void FriendsLayer::getNormalPlayer_Done(cocos2d::CCObject *data)
             mWarning->setString("暂时没有在线玩家！");
             return;
         }
-        etListCount = etList->count();
+        
+        //<10 Players for select
+        etListCount = etList->count()>= 10 ? 10 : etList->count();
         
         CCDictionary * dic = NULL;
-        for(int i = 0; i < etList->count(); i ++)
+        
+        int listCount = etList->count()>= 10 ? 10 : etList->count();
+        
+        for(int i = 0; i < listCount; i ++)
         {
             dic = (CCDictionary *)etList->objectAtIndex(i);
 
@@ -485,6 +513,8 @@ void FriendsLayer::getNormalPlayer_Done(cocos2d::CCObject *data)
             {
                 mSimpleUserInfo->setSNS(((CCString *)snsList->objectAtIndex(i))->getCString());
             }
+            pPlayerList->addObject(mSimpleUserInfo);
+            
             mSimpleUserInfo->retrieveAvartaImage(this, callfuncND_selector(FriendsLayer::addSimpleUser));
         }
     }
@@ -493,9 +523,6 @@ void FriendsLayer::getNormalPlayer_Done(cocos2d::CCObject *data)
         mWarning->setVisible(true);
         mWarning->setString("暂时没有在线玩家！");
     }
-    
-    Loading::sharedLoading()->removeLoading();
-
 }
 
 void FriendsLayer::getRealFriends_Done(cocos2d::CCObject *data)
@@ -518,7 +545,7 @@ void FriendsLayer::getRealFriends_Done(cocos2d::CCObject *data)
         {
             Loading::sharedLoading()->removeLoading();
             mWarning->setVisible(true);
-            mWarning->setString("暂时没有排行信息！");
+            mWarning->setString("您暂时还没有好友！");
             return;
         }
         
@@ -543,6 +570,8 @@ void FriendsLayer::getRealFriends_Done(cocos2d::CCObject *data)
             {
                 mSimpleUserInfo->setSNS(((CCString *)snsList->objectAtIndex(i))->getCString());
             }
+            pFriendsList->addObject(mSimpleUserInfo);
+            
             mSimpleUserInfo->retrieveAvartaImage(this, callfuncND_selector(FriendsLayer::addSimpleUser));
         }
     }
@@ -551,8 +580,6 @@ void FriendsLayer::getRealFriends_Done(cocos2d::CCObject *data)
         mWarning->setVisible(true);
         mWarning->setString("您暂时还没有好友！");
     }
-
-    Loading::sharedLoading()->removeLoading();
 }
 
 void FriendsLayer::getFriendsRequest_Done(cocos2d::CCObject *data)
@@ -576,7 +603,7 @@ void FriendsLayer::getFriendsRequest_Done(cocos2d::CCObject *data)
         {
             Loading::sharedLoading()->removeLoading();
             mWarning->setVisible(true);
-            mWarning->setString("暂时没有排行信息！");
+            mWarning->setString("您暂时还没有好友申请！");
             return;
         }
         
@@ -603,6 +630,7 @@ void FriendsLayer::getFriendsRequest_Done(cocos2d::CCObject *data)
             {
                 mSimpleUserInfo->setSNS(((CCString *)snsList->objectAtIndex(i))->getCString());
             }
+            pRequestList->addObject(mSimpleUserInfo);
             mSimpleUserInfo->retrieveAvartaImage(this, callfuncND_selector(FriendsLayer::addSimpleUser));
             
         }
@@ -612,7 +640,6 @@ void FriendsLayer::getFriendsRequest_Done(cocos2d::CCObject *data)
         mWarning->setVisible(true);
         mWarning->setString("您暂时还没有好友申请！");
     }
-    Loading::sharedLoading()->removeLoading();
 }
 
 void FriendsLayer::onInviteClicked(cocos2d::CCObject *pSender)
@@ -693,12 +720,9 @@ void FriendsLayer::removeFriend_Done(cocos2d::CCNode *pNode, void *data)
 }
 
 
-void FriendsLayer::onAcceptClicked(cocos2d::CCObject *pSender)
+void FriendsLayer::onAcceptClicked()
 {
     Loading::sharedLoading()->addLoadingToLayer(this);
-    clickedItemIndex = ((CCMenuItemImage *)pSender)->getParent()->getTag();
-    
-    CCLOG("Menu Clicked %d", clickedItemIndex);
     
     GameServerAction::sharedGameServerAction()->acceptFriendRequest(((SimpleUserInfo *)pRequestList->objectAtIndex(clickedItemIndex))->getUserID(), this, callfuncND_selector(FriendsLayer::acceptFriend_Done));
 }
@@ -730,12 +754,9 @@ void FriendsLayer::acceptFriend_Done(cocos2d::CCNode *pNode, void *data)
 
 }
 
-void FriendsLayer::onRejectClicked(cocos2d::CCObject *pSender)
+void FriendsLayer::onRejectClicked()
 {
     Loading::sharedLoading()->addLoadingToLayer(this);
-    clickedItemIndex = ((CCMenuItemImage *)pSender)->getParent()->getTag();
-    
-    CCLOG("Menu Clicked %d", clickedItemIndex);
     
     GameServerAction::sharedGameServerAction()->rejectFriendRequest(((SimpleUserInfo *)pRequestList->objectAtIndex(clickedItemIndex))->getUserID(), this, callfuncND_selector(FriendsLayer::rejectFriend_Done));
 
@@ -788,23 +809,6 @@ void FriendsLayer::onInvitationClicked(cocos2d::CCObject *pSender)
 
 void FriendsLayer::addSimpleUser(cocos2d::CCNode *pNode, void *data)
 {
-    
-    if((bool)data)
-    {
-        switch (friendsTab) {
-          case NormalPlyers:
-            pPlayerList->addObject(mSimpleUserInfo);
-            break;
-            case RealFriends:
-            pFriendsList->addObject(mSimpleUserInfo);
-            break;
-            case FriendsRequest:
-            pRequestList->addObject(mSimpleUserInfo);
-            break;
-        }
-        
-    }
-    
     CCLOG("etListCount: %d", etListCount);
     
     etListCount --;
@@ -812,4 +816,32 @@ void FriendsLayer::addSimpleUser(cocos2d::CCNode *pNode, void *data)
     {
         addListView();
     }
+}
+
+
+void FriendsLayer::onFriendsRequestItemClicked(cocos2d::CCObject *pSender)
+{
+    clickedItemIndex = ((CCMenuItemImage *)pSender)->getParent()->getTag();
+    CCLOG("Menu Clicked %d", clickedItemIndex);
+    
+    std::string msg = "";
+    std::string title = "好友邀请";
+    msg = "是否接受好友邀请？";
+    AlertLayer * shareAlert = AlertLayer::create(title.c_str(), msg.c_str() , true, this, callfuncND_selector(FriendsLayer::onFriendsRequestItemSelected));
+
+    this->addChild(shareAlert, Child_Order_Top);
+
+}
+
+void FriendsLayer::onFriendsRequestItemSelected(cocos2d::CCNode *pNode, void *data)
+{
+    if((bool)data)
+    {
+        onAcceptClicked();
+    }
+    else
+    {
+        onRejectClicked();
+    }
+
 }

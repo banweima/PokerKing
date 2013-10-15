@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0501B8501776C87300E97C69 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 05132BCC16FB573D00D2EB88 /* Default.png */; };
 		0501B8511776C87D00E97C69 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 05132BCA16FB571A00D2EB88 /* Default@2x.png */; };
-		0501B8521776C88500E97C69 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 05D2F0B8174F420E008BA092 /* Default-568h@2x.png */; };
 		0504657E173F2D0000A5A0D9 /* TexasScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0504657C173F2D0000A5A0D9 /* TexasScene.cpp */; };
 		05046581173F2DF300A5A0D9 /* TexasLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0504657F173F2DF300A5A0D9 /* TexasLayer.cpp */; };
 		05046584173FDC3300A5A0D9 /* PlayerInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05046582173FDC3300A5A0D9 /* PlayerInfo.cpp */; };
@@ -38,6 +37,11 @@
 		0584DD8F172BBA1B00BF71E6 /* img in Resources */ = {isa = PBXBuildFile; fileRef = 0584DD8A172BBA1A00BF71E6 /* img */; };
 		0584DD90172BBA1B00BF71E6 /* plist in Resources */ = {isa = PBXBuildFile; fileRef = 0584DD8B172BBA1A00BF71E6 /* plist */; };
 		0584DD91172BBA1B00BF71E6 /* res in Resources */ = {isa = PBXBuildFile; fileRef = 0584DD8C172BBA1B00BF71E6 /* res */; };
+		058613E618093E72002488D5 /* icon-29.png in Resources */ = {isa = PBXBuildFile; fileRef = 058613E218093E72002488D5 /* icon-29.png */; };
+		058613E718093E72002488D5 /* icon-58.png in Resources */ = {isa = PBXBuildFile; fileRef = 058613E318093E72002488D5 /* icon-58.png */; };
+		058613E818093E72002488D5 /* icon-80.png in Resources */ = {isa = PBXBuildFile; fileRef = 058613E418093E72002488D5 /* icon-80.png */; };
+		058613E918093E72002488D5 /* icon-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 058613E518093E72002488D5 /* icon-120.png */; };
+		058613EB18094015002488D5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 058613EA18094015002488D5 /* Default-568h@2x.png */; };
 		058761F71771A52400C29D7A /* BossBoardLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 058761F51771A52400C29D7A /* BossBoardLayer.cpp */; };
 		0593E66A17DF6F0700AADC79 /* md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0593E66817DF6F0700AADC79 /* md5.cpp */; };
 		059DDFCD17BBC49B0039E056 /* BJ.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 059DDFCC17BBC49B0039E056 /* BJ.mp3 */; };
@@ -378,6 +382,11 @@
 		0584DD8A172BBA1A00BF71E6 /* img */ = {isa = PBXFileReference; lastKnownFileType = folder; path = img; sourceTree = "<group>"; };
 		0584DD8B172BBA1A00BF71E6 /* plist */ = {isa = PBXFileReference; lastKnownFileType = folder; path = plist; sourceTree = "<group>"; };
 		0584DD8C172BBA1B00BF71E6 /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
+		058613E218093E72002488D5 /* icon-29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-29.png"; sourceTree = "<group>"; };
+		058613E318093E72002488D5 /* icon-58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-58.png"; sourceTree = "<group>"; };
+		058613E418093E72002488D5 /* icon-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-80.png"; sourceTree = "<group>"; };
+		058613E518093E72002488D5 /* icon-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-120.png"; sourceTree = "<group>"; };
+		058613EA18094015002488D5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		058761F51771A52400C29D7A /* BossBoardLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BossBoardLayer.cpp; sourceTree = "<group>"; };
 		058761F61771A52400C29D7A /* BossBoardLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BossBoardLayer.h; sourceTree = "<group>"; };
 		0593E66817DF6F0700AADC79 /* md5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = md5.cpp; sourceTree = "<group>"; };
@@ -959,7 +968,6 @@
 		05CF66C3175269760043737D /* ShopLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopLayer.h; sourceTree = "<group>"; };
 		05CF66C5175273280043737D /* Helpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Helpers.cpp; sourceTree = "<group>"; };
 		05CF66C6175273280043737D /* Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
-		05D2F0B8174F420E008BA092 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		05D2F0BD174FB26E008BA092 /* RotateY.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RotateY.cpp; sourceTree = "<group>"; };
 		05D2F0BE174FB26E008BA092 /* RotateY.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotateY.h; sourceTree = "<group>"; };
 		05D69DAA17679278007F5D8D /* FileHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileHelper.cpp; sourceTree = "<group>"; };
@@ -2932,9 +2940,13 @@
 		9E87FAFA15FF2A2C00631A02 = {
 			isa = PBXGroup;
 			children = (
+				058613EA18094015002488D5 /* Default-568h@2x.png */,
+				058613E218093E72002488D5 /* icon-29.png */,
+				058613E318093E72002488D5 /* icon-58.png */,
+				058613E418093E72002488D5 /* icon-80.png */,
+				058613E518093E72002488D5 /* icon-120.png */,
 				05CF544D1770ABFB00120F4E /* Icon-0.png */,
 				05CF544B1770AABD00120F4E /* icon-2.png */,
-				05D2F0B8174F420E008BA092 /* Default-568h@2x.png */,
 				05132BCC16FB573D00D2EB88 /* Default.png */,
 				05132BCA16FB571A00D2EB88 /* Default@2x.png */,
 				9E87FB1915FF2A2C00631A02 /* PokerKing */,
@@ -3058,6 +3070,7 @@
 				05C2C000172B83AD0096FC1A /* Icon.png in Resources */,
 				05C2C001172B83AD0096FC1A /* Icon@2x.png in Resources */,
 				05C2C009172B83AD0096FC1A /* Info.plist in Resources */,
+				058613E818093E72002488D5 /* icon-80.png in Resources */,
 				05C2C00A172B83AD0096FC1A /* iTunesArtwork in Resources */,
 				05C2C00B172B83AD0096FC1A /* Loser.wav in Resources */,
 				05C2C1CA172B9C420096FC1A /* ChangeLog in Resources */,
@@ -3065,8 +3078,11 @@
 				05C2C39E172B9C880096FC1A /* json_internalarray.inl in Resources */,
 				05C2C39F172B9C880096FC1A /* json_internalmap.inl in Resources */,
 				05C2C3A2172B9C880096FC1A /* json_valueiterator.inl in Resources */,
+				058613EB18094015002488D5 /* Default-568h@2x.png in Resources */,
 				05C2C3A4172B9C880096FC1A /* sconscript in Resources */,
 				0584DD8D172BBA1B00BF71E6 /* ccbi in Resources */,
+				058613E918093E72002488D5 /* icon-120.png in Resources */,
+				058613E718093E72002488D5 /* icon-58.png in Resources */,
 				0584DD8E172BBA1B00BF71E6 /* hd in Resources */,
 				0584DD8F172BBA1B00BF71E6 /* img in Resources */,
 				0584DD90172BBA1B00BF71E6 /* plist in Resources */,
@@ -3076,7 +3092,7 @@
 				05CF544E1770ABFB00120F4E /* Icon-0.png in Resources */,
 				0501B8501776C87300E97C69 /* Default.png in Resources */,
 				0501B8511776C87D00E97C69 /* Default@2x.png in Resources */,
-				0501B8521776C88500E97C69 /* Default-568h@2x.png in Resources */,
+				058613E618093E72002488D5 /* icon-29.png in Resources */,
 				050DD70717B63E180080450C /* cheer.mp3 in Resources */,
 				050DD70917B63FBB0080450C /* guzhang.mp3 in Resources */,
 				059DDFCD17BBC49B0039E056 /* BJ.mp3 in Resources */,
@@ -3373,7 +3389,8 @@
 		9E87FD7D15FF2A3100631A02 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -3395,6 +3412,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "";
+				PROVISIONING_PROFILE = "8D43EA6C-74B9-4D6E-8402-DDC2AA7561A7";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = armv7;
 			};
@@ -3403,7 +3421,8 @@
 		9E87FD7E15FF2A3100631A02 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
@@ -3423,6 +3442,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = "";
+				PROVISIONING_PROFILE = "8D43EA6C-74B9-4D6E-8402-DDC2AA7561A7";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = armv7;
 			};
@@ -3432,8 +3452,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: 小明 钮 (F8P99VC5E4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 小明 钮 (F8P99VC5E4)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -3441,7 +3461,7 @@
 				GCC_PREFIX_HEADER = PokerKing/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = PokerKing/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/PokerKing/libs/cocos2dx/platform/third_party/android/prebuilt/libcurl/libs/armeabi\"",
@@ -3475,8 +3495,8 @@
 					"-lz",
 				);
 				PRODUCT_NAME = PokerKing;
-				PROVISIONING_PROFILE = "927661BE-4AB6-4719-B87A-565C8078EAFA";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "927661BE-4AB6-4719-B87A-565C8078EAFA";
+				PROVISIONING_PROFILE = "8D43EA6C-74B9-4D6E-8402-DDC2AA7561A7";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8D43EA6C-74B9-4D6E-8402-DDC2AA7561A7";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -3486,15 +3506,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: 小明 钮 (F8P99VC5E4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 小明 钮 (F8P99VC5E4)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = PokerKing/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = PokerKing/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/PokerKing/libs/cocos2dx/platform/third_party/android/prebuilt/libcurl/libs/armeabi\"",
@@ -3528,8 +3549,8 @@
 					"-lz",
 				);
 				PRODUCT_NAME = PokerKing;
-				PROVISIONING_PROFILE = "927661BE-4AB6-4719-B87A-565C8078EAFA";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "927661BE-4AB6-4719-B87A-565C8078EAFA";
+				PROVISIONING_PROFILE = "8D43EA6C-74B9-4D6E-8402-DDC2AA7561A7";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8D43EA6C-74B9-4D6E-8402-DDC2AA7561A7";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

@@ -17,12 +17,14 @@
 #include "GameInfo.h"
 #include "GameServer.h"
 #include "MainBoardScene.h"
-#include "GameKitFactory.h"
+#include "UserInfo.h"
 #include "ChatLayer.h"
 #include "platform.h"
 #include "SimpleAudioEngine.h"
 #include "ImageController.h"
 #include "Banner.h"
+#include "WeiboFactory.h"
+
 
 #define TopHeight 40;
 
@@ -53,8 +55,6 @@ BlackjackLayer::BlackjackLayer()
 , mMagicTool(NULL)
 , mMagicItemLabel(NULL)
 , mBackground(NULL)
-, mYesNoMenu(NULL)
-, mYesNoWords(NULL)
 , mDecreaseBetButton(NULL)
 , mIncreaseBetButton(NULL)
 , mHitButton(NULL)
@@ -91,7 +91,6 @@ BlackjackLayer::~BlackjackLayer()
     CC_SAFE_RELEASE(mMagicItemSprite);
     CC_SAFE_RELEASE(mMagicTool);
     CC_SAFE_RELEASE(mBackground);
-    CC_SAFE_RELEASE(mYesNoMenu);
     
     CC_SAFE_RELEASE(mHitButton);
     CC_SAFE_RELEASE(mStandButton);
@@ -106,13 +105,13 @@ bool BlackjackLayer::init()
     {
         CC_BREAK_IF(! CCLayer::init());
         
-        if(LoadStringFromXML(NeedBJInsurance) == "No")
+        if(LoadStringFromXML(NeedBJInsurance) == "Yes")
         {
-            needInsurance = false;
+            needInsurance = true;
         }
         else
         {
-            needInsurance = true;
+            needInsurance = false;
         }
         
         if(LoadStringFromXML(NeedBJBigSmall) == "No")
@@ -134,6 +133,7 @@ bool BlackjackLayer::init()
 
 void BlackjackLayer::setupLayer()
 {
+    CCLOG("setupLayer");
     CCNode * node = CCBUtility::loadCCB("ccbi/blackjack.ccbi", "BlackjackLayer", CCLayerLoader::loader(), this);
     this->addChild(node);
     
@@ -190,18 +190,6 @@ void BlackjackLayer::setupLayer()
     mDealerWords = WordBoard::create();
     mDealerWords->retain();
     this->addChild(mDealerWords);
-    
-    
-    mYesNoMenu->setVisible(false);
-    
-    mYesNoWords = WordBoard::create();
-    mYesNoWords->retain();
-    this->addChild(mYesNoWords);
-    
-    mYesNoWords->setVisible(false);
-    mYesNoWords->setPosition(ccp(
-        w/2, tmpH
-    ));
 
     mSplitCardBtn->setVisible(false);
     mDoubleBtn->setVisible(false);
@@ -274,7 +262,7 @@ void BlackjackLayer::setupLayer()
     
     BroadCast::sharedBroadCast()->addBCToLayer(this);
     
-//    mBossWord->setVisible(false);
+
     mInsurance->setVisible(false);
     CCLOG("onSteup");
 }
@@ -285,26 +273,23 @@ void BlackjackLayer::showUserInfo()
     
     CCString * userCoinString = NULL;
     
-    if(userCoinAmount < 10000)
+    if(userCoinAmount < 99999)
     {
         userCoinString = CCString::createWithFormat("%d",userCoinAmount);
     }
-    else if(userCoinAmount < 1000000)
+    else if(userCoinAmount < 9999999)
     {
-        userCoinString = CCString::createWithFormat("%dK",userCoinAmount / 1000);
+        userCoinString = CCString::createWithFormat("%d 万",userCoinAmount / 10000);
     }
-    else if(userCoinAmount < 1000000000)
+    else
     {
-        userCoinString = CCString::createWithFormat("%dM",userCoinAmount / 1000000);
-    }
-    else if(userCoinAmount < 1000000000000)
-    {
-        userCoinString = CCString::createWithFormat("%dB",userCoinAmount / 1000000000);
+        userCoinString = CCString::createWithFormat("%d 百万",userCoinAmount / 1000000);
     }
     
     mCoinAmountLabel->setString(userCoinString->getCString());
     
-    mRankLabel->setString(CCString::createWithFormat("%d",UserInfo::sharedUserInfo()->getLevel())->getCString());
+    mRankLabel->setString(CCString::createWithFormat("%d",
+                UserInfo::sharedUserInfo()->getMedal())->getCString());
     
     mMagicItemLabel->setString(CCString::createWithFormat("%d",UserInfo::sharedUserInfo()->getMagicItemAmount(MagicItem_Switch_ID))->getCString());
     
@@ -346,11 +331,6 @@ SEL_MenuHandler BlackjackLayer::onResolveCCBCCMenuItemSelector(CCObject * pTarge
     
     CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onMagicToolClicked", BlackjackLayer::onMagicToolClicked);
     
-    CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onYesClicked", BlackjackLayer::onYesClicked);
-    CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onNoClicked", BlackjackLayer::onNoClicked);
-    
-    
-    
     return NULL;
 }
 
@@ -390,8 +370,7 @@ bool BlackjackLayer::onAssignCCBMemberVariable(CCObject * pTarget, CCString * pM
     
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mBackground", CCSprite *, mBackground);
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mInsurance", CCSprite *, mInsurance);
-    
-    CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "mYesNoMenu", CCMenu *, mYesNoMenu);
+
     return false;
 }
 
@@ -427,26 +406,28 @@ void BlackjackLayer::getDealerImage(bool isBoss)
         mDealerImageSprite->removeFromParentAndCleanup(true);
     }
     
-    CCString * dealer = NULL;
+    CCString * dealerImage = NULL;
+    CCString * dealerNM = NULL;
     
     int dealerIndex = arc4random() % 16 + 1;
     if(isBoss || BattleInfo::sharedBattleInfo()->getBattleType() == BossBattle)
     {
-        dealer = CCString::create(BattleInfo::sharedBattleInfo()->getRaidBoss()->getOnlineBossName());
+        dealerNM = CCString::create(BattleInfo::sharedBattleInfo()->getRaidBoss()->getOnlineBossName());
     }
     else
     {
-        dealer = CCString::createWithFormat("荷官 %d",dealerIndex);
+        dealerImage = CCString::createWithFormat("Dealer%d",dealerIndex);
+        dealerNM = CCString::createWithFormat("荷官 %d",dealerIndex);
     }
     
     
     if(dealerName)
     {
-        dealerName->setString(dealer->getCString());
+        dealerName->setString(dealerNM->getCString());
     }
     else
     {
-        dealerName = CCLabelTTF::create(dealer->getCString(), "Helvetica", 12);
+        dealerName = CCLabelTTF::create(dealerNM->getCString(), "Helvetica", 12);
         
         dealerName->setAnchorPoint(ccp(0.5,0.5));
         
@@ -458,7 +439,7 @@ void BlackjackLayer::getDealerImage(bool isBoss)
         std::string bossImageUrl = BattleInfo::sharedBattleInfo()->getRaidBoss()->getOnlineBossImageUrl();
         if(bossImageUrl.length() < 3)
         {
-            showBossImage(CCSprite::createWithSpriteFrameName((BattleInfo::sharedBattleInfo()->getRaidBoss()->getBossImage()).c_str()));
+            showBossImage(CCSprite::createWithSpriteFrameName(BattleInfo::sharedBattleInfo()->getRaidBoss()->getOnlineBossImageUrl().c_str()));
         }
         else
         {
@@ -468,7 +449,7 @@ void BlackjackLayer::getDealerImage(bool isBoss)
     }
     else
     {
-        showBossImage(CCSprite::createWithSpriteFrameName(dealer->getCString()));
+        showBossImage(CCSprite::createWithSpriteFrameName(dealerImage->getCString()));
     }
     
     
@@ -1126,7 +1107,7 @@ void BlackjackLayer::uploadMatchResult_Done(CCNode* pSender, void* data)
             RaidBossInfo * bossInfo = BattleInfo::sharedBattleInfo()->getRaidBoss();
             mRaidBossGold->setString(CCString::createWithFormat("%d",BattleInfo::sharedBattleInfo()->getRaidBoss()->getCurrentHP())->getCString());
             
-            std::string bossName = bossInfo->getBossName();
+            std::string bossName = bossInfo->getOnlineBossName();
             
             AlertLayer * shareAlert =NULL;
             
@@ -1143,12 +1124,22 @@ void BlackjackLayer::uploadMatchResult_Done(CCNode* pSender, void* data)
                     break;
 
                   case BossStatus_End:
-                    msg = CCString::createWithFormat("%s 已经被打败了！", bossName.c_str());
+                  {
+                    msg = CCString::createWithFormat("%s 已经被打败了！\r你获得了 %d 块优胜奖牌！", bossName.c_str(), bossInfo->getBossReward());
+                    
+                    
+                    shareAlert = AlertLayer::create("赌神通缉令",msg->getCString() , needCancel, NULL, NULL);
+                    
+                    //Share weibo
+                    NSString * value = [[NSString alloc] initWithFormat:@"祝贺 %s 打败了 %s，获得了 %d 块优胜奖牌！", UserInfo::sharedUserInfo()->getUserName().c_str() ,bossName.c_str(), bossInfo->getBossReward() ];
+    
+                    [[WeiboFactory sharedWeiboFactory] uploadStatus:value];
+                    
                     bossInfo->release();
                     BattleInfo::sharedBattleInfo()->setRaidBoss(NULL);
-                    shareAlert = AlertLayer::create("赌神通缉令",msg->getCString() , needCancel, NULL, NULL);
-                    break;
                     
+                    break;
+                   }
                   case BossStatus_Escape:
                     msg = CCString::createWithFormat("%s 已经逃跑了！", bossName.c_str());
                     bossInfo->release();
@@ -1180,37 +1171,16 @@ void BlackjackLayer::uploadMatchResult_Done(CCNode* pSender, void* data)
 
 void BlackjackLayer::onMagicToolClicked()
 {
-    mChipCount->setVisible(false);
     
-    mYesNoWords->setText(CCString::createWithFormat("消耗 %d 个魔法道具",  mMagicToolTimes)->getCString());
+    AlertLayer * shareAlert =NULL;
+    shareAlert = AlertLayer::create("魔法道具",CCString::createWithFormat("消耗 %d 个魔法道具，可以更换最后一张牌！",  mMagicToolTimes)->getCString() , true, this, callfuncND_selector( BlackjackLayer::requestMagicItem));
     
-    mYesNoWords->setVisible(true);
+    this->addChild(shareAlert, Child_Order_Top);
+
     
-    mYesNoMenu->setVisible(true);
 }
 
-void BlackjackLayer::onYesClicked(cocos2d::CCObject *pSender)
-{
-    mYesNoWords->setVisible(false);
-    
-    mYesNoMenu->setVisible(false);
-    
-    mChipCount->setVisible(true);
-    
-    
-    requestMagicItem();
-}
-
-void BlackjackLayer::onNoClicked(cocos2d::CCObject *pSender)
-{
-    mYesNoWords->setVisible(false);
-    
-    mYesNoMenu->setVisible(false);
-    
-    mChipCount->setVisible(true);
-}
-
-void BlackjackLayer::requestMagicItem()
+void BlackjackLayer::requestMagicItem(CCNode *pSender, void *data)
 {
     //mMagicToolTimes
     if(mMagicToolTimes > UserInfo::sharedUserInfo()->getMagicItemAmount(MagicItem_Switch_ID))
@@ -1280,13 +1250,13 @@ void BlackjackLayer::startOnlineBattle_done(CCNode* pSender, void* data)
             RaidBossInfo * bossInfo = BattleInfo::sharedBattleInfo()->getRaidBoss();
             mRaidBossGold->setString(CCString::createWithFormat("%d",BattleInfo::sharedBattleInfo()->getRaidBoss()->getCurrentHP())->getCString());
             
-            std::string bossName = bossInfo->getBossName();
+            std::string bossName = bossInfo->getOnlineBossName();
             
             switch (bossInfo->getStatus()) {
-                  case BossStatus_Active:
-                    msg = CCString::createWithFormat("%s 还有%d，找朋友来帮忙吧！",bossName.c_str(), bossInfo->getCurrentHP());
-                    needCancel = true;
-                    break;
+//                  case BossStatus_Active:
+//                    msg = CCString::createWithFormat("%s 还有%d，找朋友来帮忙吧！",bossName.c_str(), bossInfo->getCurrentHP());
+//                    needCancel = true;
+//                    break;
 
                   case BossStatus_End:
                     msg = CCString::createWithFormat("%s 已经被打败了！", bossName.c_str());
@@ -1301,14 +1271,13 @@ void BlackjackLayer::startOnlineBattle_done(CCNode* pSender, void* data)
                     break;
                 }
             
-            //Need get BossInfo
-//            AlertLayer * shareAlert = AlertLayer::create("赌神通缉令",msg->getCString() , needCancel, this, (SEL_CallFuncND)callfuncND_selector(BlackjackLayer::shareBoss));
-//            this->addChild(shareAlert, Child_Order_Top);
-            
-            
             bossInfo->release();
             BattleInfo::sharedBattleInfo()->setRaidBoss(NULL);
             Loading::sharedLoading()->removeLoading();
+            
+            AlertLayer * shareAlert =NULL;
+            shareAlert = AlertLayer::create("赌神通缉令",msg->getCString() , needCancel, NULL, NULL);
+            this->addChild(shareAlert, Child_Order_Top);
             return;
         }
         
@@ -1342,7 +1311,7 @@ void BlackjackLayer::startOnlineBattle_done(CCNode* pSender, void* data)
                 
                 if(mBossBackground == NULL)
                 {
-                    mBossBackground = CCSprite::createWithSpriteFrameName("main_bk");
+                    mBossBackground = CCSprite::createWithSpriteFrameName("Game_BK_Blue");
                     this->addChild(mBossBackground, -100);
                 }
                 
@@ -1369,6 +1338,9 @@ void BlackjackLayer::startOnlineBattle_done(CCNode* pSender, void* data)
             isRaidBoss = false;
             hasSharedBoss = false;
         }
+        
+        UserInfo::sharedUserInfo()->setGold(UserInfo::sharedUserInfo()->getGold() - mCurrentBet);
+        showUserInfo();
         startGame();
     }
     else
@@ -1389,7 +1361,7 @@ void BlackjackLayer::startGame()
 
     isInBattle = true;
     int w = getContentSize().width;
-    int h = getContentSize().height;
+    int h = 480;//getContentSize().height;
     int menuH = 0;
     int notifyH = TopHeight;
     int tmpH = (h-menuH-notifyH)/2 + menuH;
@@ -1485,32 +1457,6 @@ void BlackjackLayer::startGame()
     }
 }
 
-void BlackjackLayer::updateCurrentGold()
-{
-    long userCoinAmount = UserInfo::sharedUserInfo()->getGold() - mCurrentBet;
-    
-    CCString * userCoinString = NULL;
-    
-    if(userCoinAmount < 10000)
-    {
-        userCoinString = CCString::createWithFormat("%d",userCoinAmount);
-    }
-    else if(userCoinAmount < 1000000)
-    {
-        userCoinString = CCString::createWithFormat("%dK",userCoinAmount / 1000);
-    }
-    else if(userCoinAmount < 1000000000)
-    {
-        userCoinString = CCString::createWithFormat("%dM",userCoinAmount / 1000000);
-    }
-    else if(userCoinAmount < 1000000000000)
-    {
-        userCoinString = CCString::createWithFormat("%dB",userCoinAmount / 1000000000);
-    }
-    
-    mCoinAmountLabel->setString(userCoinString->getCString());
-}
-
 void BlackjackLayer::globalChatClicked()
 {
     ChatLayer * wbLayer = ChatLayer::sharedChatLayer();
@@ -1582,7 +1528,7 @@ void BlackjackLayer::friendSupport()
     
     int friendSupportValue = FriendSupportRate + friendsCount;
     
-    friendSupportValue = (friendSupportValue > 20)?20:friendSupportValue;
+    friendSupportValue = (friendSupportValue > 40)?40:friendSupportValue;
     
     if(supportRand < friendSupportValue)
     {

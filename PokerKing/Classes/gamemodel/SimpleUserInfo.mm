@@ -55,12 +55,7 @@ void SimpleUserInfo::parseSimpleUserInfo(CCDictionary * SimpleUserInfoDict)
     this->setLevel(((CCString *)SimpleUserInfoDict->objectForKey("level"))->intValue());
     this->setExp(((CCString *)SimpleUserInfoDict->objectForKey("exp"))->doubleValue());
     this->setGold(((CCString *)SimpleUserInfoDict->objectForKey("gold"))->doubleValue());
-    
-    
-    if(SimpleUserInfoDict->objectForKey("bossImageUrl"))
-    {
-    
-    }
+
 }
 
 
@@ -168,9 +163,24 @@ void SimpleUserInfo::retrieveAvartaImage_Done(cocos2d::CCNode *node, void *data)
 {
     CCLog("SU retrieveAvartaImage_Done");
     CCLOG("SU UserId: %d  Done", mUserID);
-    CCTexture2D* tex2d = (CCTexture2D*)data;
     
-    mAvartaImage = CCSprite::createWithTexture(tex2d);
+    
+    if(data)
+    {
+        CCTexture2D* tex2d = (CCTexture2D*)data;
+        mAvartaImage = CCSprite::createWithTexture(tex2d);
+    }
+    else
+    {
+        if (mGender == "m")
+        {
+            mAvartaImage = CCSprite::createWithSpriteFrameName("crown_king");
+        }
+        else
+        {
+            mAvartaImage = CCSprite::createWithSpriteFrameName("crown_queen");
+        }
+    }
     
     mAvartaImage->retain();
     hasAvarteDone = true;

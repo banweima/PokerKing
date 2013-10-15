@@ -37,8 +37,9 @@ public:
     void parseRaidBossInfo(CCDictionary * RaidBossInfoDic);
     bool init();
     
-    std::string getBossName();
-    std::string getBossImage();
+//    std::string getBossName();
+//    std::string getBossImage();
+    int getBossReward();
 };
 
 

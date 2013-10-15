@@ -52,6 +52,8 @@ bool PlayCard::init(CardClass cclass, CardSuit suit, CardType type, bool flipped
         
 //        mSpriteBatchNode = CCSpriteBatchNode::create("plist/porkerlist.png");
         
+        winH = getWinH(); //iPhone 5 still use 480;
+        
         mSpriteBatchNode = CCNode::create();
         this->addChild(mSpriteBatchNode);
         
@@ -59,7 +61,7 @@ bool PlayCard::init(CardClass cclass, CardSuit suit, CardType type, bool flipped
         
         if(canSelect)
         {
-            CCSprite* standaloneNormal = CCSprite::createWithSpriteFrameName("task_completed");
+            CCSprite* standaloneNormal = CCSprite::createWithSpriteFrameName("stamp_pk");
             shadowCard =
             CCMenuItemSprite::create(standaloneNormal,
                                      standaloneNormal,
@@ -277,8 +279,8 @@ void PlayCard::moveBelowScreen(float newX)
 //
 
 void PlayCard::moveAboveScreen(float newX)
-{
-    setPosition(ccp(newX, getWinH() + getCardWidth()/2));
+{    
+    setPosition(ccp(newX, winH + getCardWidth()/2));
 }
 
 ////////////////////////////////////////////////////////////////
@@ -333,8 +335,9 @@ void PlayCard::moveToBelowScreen(float targetX, float targetAngle, float timeDel
 
 void PlayCard::moveToAboveScreen(float targetX, float targetAngle, float timeDelay)
 {
+    
     // Move the card:
-    moveTo(targetX, getWinH() + getCardHeight()/2, timeDelay);
+    moveTo(targetX, winH + getCardHeight()/2, timeDelay);
 }
 
 void PlayCard::flipCard()
@@ -397,7 +400,7 @@ void PlayCard::onCardClicked(cocos2d::CCObject *object)
     
     if(mIsSelected)
     {
-        shadowCard->setOpacity(100);
+        shadowCard->setOpacity(200);
     }
     else
     {

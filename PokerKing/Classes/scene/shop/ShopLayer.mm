@@ -74,8 +74,8 @@ void ShopLayer::setupLayer()
     
     
     showUserInfo();
-    isItemSales = true;
-    getItemInfo();
+    isItemSales = false;
+    getProductInfo();
 }
 
 void ShopLayer::getItemInfo()
@@ -135,7 +135,7 @@ void ShopLayer::addListView()
     
             m_pIAPListView->setContentSize(listSize);
             m_pIAPListView->setDelegate(this);
-            m_pItemListView->setAnchorPoint(ccp(0,0));
+            m_pIAPListView->setAnchorPoint(ccp(0,0));
             m_pIAPListView->setPosition(ccp(0, (mDiamond->getPositionY() - 20)*0.2));
             m_pIAPListView->setSeparatorStyle(CCListViewCellSeparatorStyleNone);
             this->addChild(m_pIAPListView);
@@ -274,6 +274,8 @@ void ShopLayer::CCListView_didClickCellAtRow(cocos2d::extension::CCListView *lis
     {
         NSLog(@"IAP Product ID: %@", [[NSString alloc] initWithCString:((IAPProductInfo *)pIAPDataList->objectAtIndex(data->nRow))->getProductId().c_str() encoding:NSUTF8StringEncoding]);
         
+        Loading::sharedLoading()->addLoadingToLayer(this);
+        
         [[StoreKitFactory sharedStoreKitFactory] removeReceiptData];
         if ([[StoreKitFactory sharedStoreKitFactory] canMakePayments]) {
         
@@ -298,7 +300,11 @@ void ShopLayer::CCListView_didClickCellAtRow(cocos2d::extension::CCListView *lis
                 GameServerAction::sharedGameServerAction()->checkIAPReceipt(((NSString *)[[NSUserDefaults standardUserDefaults]objectForKey:IAP_Receipt]).UTF8String, [[StoreKitFactory sharedStoreKitFactory] currentTier].UTF8String, 1, this, callfuncND_selector(ShopLayer::checkReceipt_Done));
             }
             
+            Loading::sharedLoading()->removeLoading();
+            
         });
+        
+        
 
     }
 }

@@ -86,6 +86,6 @@
 #define NeedBJInsurance "BlackjackInsurance"
 #define NeedBJBigSmall  "BlackjackBigSmall"
 
-#define FriendSupportRate   90
+#define FriendSupportRate   20
 
 #endif

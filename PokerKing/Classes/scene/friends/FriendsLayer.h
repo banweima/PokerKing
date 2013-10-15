@@ -37,7 +37,6 @@ class FriendsLayer : public CCLayer
 , public CCListViewDelegate
 {
 private:
-    CCSprite* mFriendsBanner;
     CCMenuItemImage * mFriends;
     CCMenuItemImage * mPlayers;
     CCMenuItemImage * mRequest;
@@ -92,8 +91,8 @@ private:
     
     void onInviteClicked(CCObject * pSender);
     void onRemoveClicked(CCObject * pSender);
-    void onAcceptClicked(CCObject * pSender);
-    void onRejectClicked(CCObject * pSender);
+    void onAcceptClicked();
+    void onRejectClicked();
     
     
     void getNormalPlayer_Done(cocos2d::CCObject *data);
@@ -119,6 +118,10 @@ private:
     void setMenuItemImageSelected(CCObject * targetItem);
     
     void onInvitationClicked(CCObject * pSender);
+    
+    void onFriendsRequestItemClicked(CCObject * pSender);
+    
+    void onFriendsRequestItemSelected(cocos2d::CCNode * pNode, void *data);
 };
 
 
