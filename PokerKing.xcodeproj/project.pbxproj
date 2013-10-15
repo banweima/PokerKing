@@ -27,7 +27,6 @@
 		054D469E177936FD006C1CE2 /* FriendsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054D469C177936FD006C1CE2 /* FriendsScene.cpp */; };
 		054D46A11779379F006C1CE2 /* FriendsLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 054D469F1779379F006C1CE2 /* FriendsLayer.mm */; };
 		054D46A417793D27006C1CE2 /* SceneControler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054D46A217793D27006C1CE2 /* SceneControler.cpp */; };
-		056EFC7A172D728E00A730F0 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 056EFC79172D728E00A730F0 /* GameKit.framework */; };
 		056EFC83172FAA6D00A730F0 /* PlayerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 056EFC82172FAA6D00A730F0 /* PlayerModel.m */; };
 		056EFC8A172FAABD00A730F0 /* GameKitFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 056EFC85172FAABC00A730F0 /* GameKitFactory.m */; };
 		056EFC8B172FAABD00A730F0 /* NotificationData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 056EFC86172FAABC00A730F0 /* NotificationData.cpp */; };
@@ -42,6 +41,7 @@
 		058613E818093E72002488D5 /* icon-80.png in Resources */ = {isa = PBXBuildFile; fileRef = 058613E418093E72002488D5 /* icon-80.png */; };
 		058613E918093E72002488D5 /* icon-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 058613E518093E72002488D5 /* icon-120.png */; };
 		058613EB18094015002488D5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 058613EA18094015002488D5 /* Default-568h@2x.png */; };
+		058613ED180D28AE002488D5 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 058613EC180D28AE002488D5 /* GameKit.framework */; };
 		058761F71771A52400C29D7A /* BossBoardLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 058761F51771A52400C29D7A /* BossBoardLayer.cpp */; };
 		0593E66A17DF6F0700AADC79 /* md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0593E66817DF6F0700AADC79 /* md5.cpp */; };
 		059DDFCD17BBC49B0039E056 /* BJ.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 059DDFCC17BBC49B0039E056 /* BJ.mp3 */; };
@@ -368,7 +368,6 @@
 		054D46A01779379F006C1CE2 /* FriendsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsLayer.h; sourceTree = "<group>"; };
 		054D46A217793D27006C1CE2 /* SceneControler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneControler.cpp; sourceTree = "<group>"; };
 		054D46A317793D27006C1CE2 /* SceneControler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneControler.h; sourceTree = "<group>"; };
-		056EFC79172D728E00A730F0 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		056EFC81172FAA6D00A730F0 /* PlayerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerModel.h; sourceTree = "<group>"; };
 		056EFC82172FAA6D00A730F0 /* PlayerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerModel.m; sourceTree = "<group>"; };
 		056EFC84172FAABC00A730F0 /* GameKitFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameKitFactory.h; sourceTree = "<group>"; };
@@ -387,6 +386,7 @@
 		058613E418093E72002488D5 /* icon-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-80.png"; sourceTree = "<group>"; };
 		058613E518093E72002488D5 /* icon-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-120.png"; sourceTree = "<group>"; };
 		058613EA18094015002488D5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		058613EC180D28AE002488D5 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		058761F51771A52400C29D7A /* BossBoardLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BossBoardLayer.cpp; sourceTree = "<group>"; };
 		058761F61771A52400C29D7A /* BossBoardLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BossBoardLayer.h; sourceTree = "<group>"; };
 		0593E66817DF6F0700AADC79 /* md5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = md5.cpp; sourceTree = "<group>"; };
@@ -1005,9 +1005,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				05AD2D691738FBFE00F6586B /* SystemConfiguration.framework in Frameworks */,
-				056EFC7A172D728E00A730F0 /* GameKit.framework in Frameworks */,
 				9E87FB0A15FF2A2C00631A02 /* QuartzCore.framework in Frameworks */,
 				9E87FB0C15FF2A2C00631A02 /* OpenGLES.framework in Frameworks */,
+				058613ED180D28AE002488D5 /* GameKit.framework in Frameworks */,
 				05AD2D1F173568D000F6586B /* StoreKit.framework in Frameworks */,
 				9E87FB0E15FF2A2C00631A02 /* OpenAL.framework in Frameworks */,
 				9E87FB1015FF2A2C00631A02 /* AudioToolbox.framework in Frameworks */,
@@ -2966,9 +2966,9 @@
 		9E87FB0815FF2A2C00631A02 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				058613EC180D28AE002488D5 /* GameKit.framework */,
 				05AD2D681738FBFE00F6586B /* SystemConfiguration.framework */,
 				05AD2D1E173568D000F6586B /* StoreKit.framework */,
-				056EFC79172D728E00A730F0 /* GameKit.framework */,
 				9E87FB0915FF2A2C00631A02 /* QuartzCore.framework */,
 				9E87FB0B15FF2A2C00631A02 /* OpenGLES.framework */,
 				9E87FB0D15FF2A2C00631A02 /* OpenAL.framework */,
@@ -3035,6 +3035,11 @@
 				TargetAttributes = {
 					9E87FB0415FF2A2C00631A02 = {
 						DevelopmentTeam = 8D9MSHMS64;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -3389,8 +3394,8 @@
 		9E87FD7D15FF2A3100631A02 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 小明 钮 (F8P99VC5E4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 小明 钮 (F8P99VC5E4)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -3410,9 +3415,9 @@
 					"\"$(PROJECT_NAME)/libs/cocos2dx/platform/third_party/ios\"",
 					"\"$(PROJECT_NAME)/Classes/third_party\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "";
-				PROVISIONING_PROFILE = "8D43EA6C-74B9-4D6E-8402-DDC2AA7561A7";
+				PROVISIONING_PROFILE = "FC2FCEA3-B80E-4E94-B392-E9BE6B607EA8";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = armv7;
 			};
@@ -3421,8 +3426,8 @@
 		9E87FD7E15FF2A3100631A02 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 小明 钮 (F8P99VC5E4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 小明 钮 (F8P99VC5E4)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
@@ -3439,10 +3444,10 @@
 					"\"$(PROJECT_NAME)/libs/cocos2dx/platform/third_party/ios\"",
 					"\"$(PROJECT_NAME)/Classes/third_party\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = "";
-				PROVISIONING_PROFILE = "8D43EA6C-74B9-4D6E-8402-DDC2AA7561A7";
+				PROVISIONING_PROFILE = "FC2FCEA3-B80E-4E94-B392-E9BE6B607EA8";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = armv7;
 			};
@@ -3452,8 +3457,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 小明 钮 (F8P99VC5E4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 小明 钮 (F8P99VC5E4)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -3495,8 +3500,8 @@
 					"-lz",
 				);
 				PRODUCT_NAME = PokerKing;
-				PROVISIONING_PROFILE = "8D43EA6C-74B9-4D6E-8402-DDC2AA7561A7";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8D43EA6C-74B9-4D6E-8402-DDC2AA7561A7";
+				PROVISIONING_PROFILE = "FC2FCEA3-B80E-4E94-B392-E9BE6B607EA8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FC2FCEA3-B80E-4E94-B392-E9BE6B607EA8";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -3506,9 +3511,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XIAOMING NIU (8D9MSHMS64)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 小明 钮 (F8P99VC5E4)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: 小明 钮 (F8P99VC5E4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 小明 钮 (F8P99VC5E4)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3549,8 +3554,8 @@
 					"-lz",
 				);
 				PRODUCT_NAME = PokerKing;
-				PROVISIONING_PROFILE = "8D43EA6C-74B9-4D6E-8402-DDC2AA7561A7";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8D43EA6C-74B9-4D6E-8402-DDC2AA7561A7";
+				PROVISIONING_PROFILE = "FC2FCEA3-B80E-4E94-B392-E9BE6B607EA8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FC2FCEA3-B80E-4E94-B392-E9BE6B607EA8";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
